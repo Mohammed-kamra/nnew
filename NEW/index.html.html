@@ -1,0 +1,2931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Registration form">
+  <title>Mobile Friendly Form</title>
+  <link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+  <div class="container">
+    <div class="admin-section">
+      <button class="admin-toggle" onclick="toggleAdminPanel(event)">
+        <span>⚙️</span>
+        <span id="admin-toggle-text">Admin</span>
+      </button>
+      <div class="admin-panel" id="adminPanel">
+        <h3 id="admin-title">Admin Panel</h3>
+        <div class="admin-login">
+          <h4 id="admin-login-title">Login</h4>
+          <div class="admin-form-group">
+            <label for="admin-username" id="admin-username-label">Username</label>
+            <input type="text" id="admin-username" name="admin-username" autocomplete="username" placeholder="Enter username" onkeypress="handleLoginKeyPress(event)"/>
+          </div>
+          <div class="admin-form-group">
+            <label for="admin-password" id="admin-password-label">Password</label>
+            <input type="password" id="admin-password" name="admin-password" autocomplete="current-password" placeholder="Enter password" onkeypress="handleLoginKeyPress(event)"/>
+          </div>
+          <button type="button" class="admin-login-btn" onclick="adminLogin()" id="admin-login-btn">Login</button>
+        </div>
+        <div class="admin-content hidden" id="adminContent">
+          <div class="admin-tabs">
+            <button class="admin-tab active" onclick="switchAdminTab('settings', this)" id="tab-settings">Settings</button>
+            <button class="admin-tab" onclick="switchAdminTab('users', this)" id="tab-users">Users</button>
+            <button class="admin-tab" onclick="switchAdminTab('registration', this)" id="tab-registration">Registration</button>
+          </div>
+          
+          <div class="admin-content-section active" id="section-settings">
+            <h4 id="settings-title">Settings</h4>
+            
+            <!-- Part 1: Website Availability Control -->
+            <div class="settings-section-divider">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary); font-size: 1.3rem; font-weight: 700;">Part 1: Website Availability Control</h5>
+              <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Set when registration opens and for how long. Users cannot register until you activate it.</p>
+            </div>
+            
+            <div class="website-settings-card">
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="website-open-date">Registration Opens - Date</label>
+                  <input type="date" id="website-open-date" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="website-open-time">Registration Opens - Time</label>
+                  <input type="time" id="website-open-time" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="website-duration">Duration (Minutes)</label>
+                  <input type="number" id="website-duration" min="1" placeholder="e.g. 60" />
+                  <small style="color: #666; font-size: 0.85rem;">How long registration will be open (in minutes)</small>
+                </div>
+                <div class="admin-form-group">
+                  <label>Current Status</label>
+                  <div id="website-status" style="padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; color: #ef4444; font-weight: 600;">
+                    Registration is CLOSED
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-save-settings" onclick="saveWebsiteSettings()">Save Website Settings</button>
+              <button type="button" class="btn-activate-website" onclick="activateWebsiteNow()" style="margin-left: 1rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">Activate Registration Now</button>
+            </div>
+            
+            <!-- Part 2: Group Configuration -->
+            <div class="settings-section-divider" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid rgba(102, 126, 234, 0.2);">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary); font-size: 1.3rem; font-weight: 700;">Part 2: Group Configuration</h5>
+              <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Configure time, date, day, and capacity for each group.</p>
+            </div>
+            
+            <!-- Group A Settings -->
+            <div class="group-settings-card" data-group="A">
+              <h5>Group A Settings</h5>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupA-time">Time (e.g., 8:00 to 9:00)</label>
+                  <input type="text" id="groupA-time" placeholder="8:00 to 9:00" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupA-date">Date</label>
+                  <input type="date" id="groupA-date" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupA-day">Day</label>
+                  <select id="groupA-day">
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupA-capacity">Capacity (Number of Companies)</label>
+                  <input type="number" id="groupA-capacity" min="1" placeholder="10" />
+                </div>
+              </div>
+              <div class="admin-form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="groupA-visible" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>Show Group A on Main Page</span>
+                </label>
+              </div>
+              <button type="button" class="btn-save-settings" onclick="saveGroupSettings('A')">Save Group A Settings</button>
+            </div>
+            
+            <!-- Group B Settings -->
+            <div class="group-settings-card" data-group="B">
+              <h5>Group B Settings</h5>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupB-time">Time (e.g., 8:00 to 9:00)</label>
+                  <input type="text" id="groupB-time" placeholder="8:00 to 9:00" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupB-date">Date</label>
+                  <input type="date" id="groupB-date" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupB-day">Day</label>
+                  <select id="groupB-day">
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupB-capacity">Capacity (Number of Companies)</label>
+                  <input type="number" id="groupB-capacity" min="1" placeholder="10" />
+                </div>
+              </div>
+              <div class="admin-form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="groupB-visible" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>Show Group B on Main Page</span>
+                </label>
+              </div>
+              <button type="button" class="btn-save-settings" onclick="saveGroupSettings('B')">Save Group B Settings</button>
+            </div>
+            
+            <!-- Group C Settings -->
+            <div class="group-settings-card" data-group="C">
+              <h5>Group C Settings</h5>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupC-time">Time (e.g., 8:00 to 9:00)</label>
+                  <input type="text" id="groupC-time" placeholder="8:00 to 9:00" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupC-date">Date</label>
+                  <input type="date" id="groupC-date" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupC-day">Day</label>
+                  <select id="groupC-day">
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupC-capacity">Capacity (Number of Companies)</label>
+                  <input type="number" id="groupC-capacity" min="1" placeholder="10" />
+                </div>
+              </div>
+              <div class="admin-form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="groupC-visible" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>Show Group C on Main Page</span>
+                </label>
+              </div>
+              <button type="button" class="btn-save-settings" onclick="saveGroupSettings('C')">Save Group C Settings</button>
+            </div>
+            
+            <!-- Group D Settings -->
+            <div class="group-settings-card" data-group="D">
+              <h5>Group D Settings</h5>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupD-time">Time (e.g., 8:00 to 9:00)</label>
+                  <input type="text" id="groupD-time" placeholder="8:00 to 9:00" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupD-date">Date</label>
+                  <input type="date" id="groupD-date" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="groupD-day">Day</label>
+                  <select id="groupD-day">
+                    <option value="">Select Day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div class="admin-form-group">
+                  <label for="groupD-capacity">Capacity (Number of Companies)</label>
+                  <input type="number" id="groupD-capacity" min="1" placeholder="10" />
+                </div>
+              </div>
+              <div class="admin-form-group" style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                  <input type="checkbox" id="groupD-visible" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                  <span>Show Group D on Main Page</span>
+                </label>
+              </div>
+              <button type="button" class="btn-save-settings" onclick="saveGroupSettings('D')">Save Group D Settings</button>
+            </div>
+            
+            <!-- Part 3: Manual Company Management -->
+            <div class="settings-section-divider" style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid rgba(102, 126, 234, 0.2);">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary); font-size: 1.3rem; font-weight: 700;">Part 3: Manual Company Management</h5>
+              <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Manually add company names to the system.</p>
+            </div>
+            
+            <div class="company-management-card">
+              <div class="add-company-form">
+                <h5>Add Companies</h5>
+                <div class="admin-form-group">
+                  <label for="manual-company-name-single">Add Single Company</label>
+                  <div class="form-row">
+                    <input type="text" id="manual-company-name-single" placeholder="Enter company name" style="flex: 1;" />
+                    <button type="button" class="btn-add-company" onclick="addManualCompany()" style="margin-top: 0;">Add Company</button>
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-top: 1.5rem;">
+                  <label for="manual-company-names-bulk">Add Multiple Companies (Paste list - one per line or separated by commas)</label>
+                  <textarea id="manual-company-names-bulk" rows="6" placeholder="Paste company names here, one per line or separated by commas&#10;Example:&#10;Company 1&#10;Company 2&#10;Company 3&#10;Or: Company 1, Company 2, Company 3" style="width: 100%; padding: 0.875rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.95rem; font-family: inherit; resize: vertical;"></textarea>
+                  <button type="button" class="btn-add-company" onclick="addBulkCompanies()" style="margin-top: 0.75rem; width: 100%;">Add All Companies</button>
+                </div>
+              </div>
+              
+              <div class="companies-list-section">
+                <h5 style="margin-top: 2rem; margin-bottom: 1rem;">Companies List</h5>
+                <div class="admin-form-group" style="margin-bottom: 1rem;">
+                  <label for="company-search-input">Search Companies</label>
+                  <input type="text" id="company-search-input" placeholder="Type to search company names..." style="width: 100%; padding: 0.875rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.95rem; font-family: inherit;" oninput="filterCompaniesList(this.value)" />
+                </div>
+                <div id="manual-companies-list" class="manual-companies-list">
+                  <!-- Companies will be displayed here -->
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="admin-content-section" id="section-users">
+            <h4 id="users-title">Users</h4>
+            
+            <div class="add-user-form">
+              <h5 id="add-user-title">Add New User</h5>
+              <div class="form-row">
+                <div class="admin-form-group">
+                  <label for="new-username" id="new-username-label">Username</label>
+                  <input type="text" id="new-username" placeholder="" />
+                </div>
+                <div class="admin-form-group">
+                  <label for="new-password" id="new-password-label">Password</label>
+                  <input type="password" id="new-password" placeholder="" />
+                </div>
+              </div>
+              <button type="button" class="btn-add-user" onclick="addUser()" id="add-user-btn">Add User</button>
+            </div>
+            
+            <div class="user-list" id="userList">
+              <!-- Users will be dynamically added here -->
+            </div>
+          </div>
+          
+          <div class="admin-content-section" id="section-registration">
+            <h4 id="registration-title">Registration</h4>
+            <div class="admin-form-group">
+              <label id="registration-label-1">Registration Management</label>
+              <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;" id="registration-desc-1">View and manage form registrations here.</p>
+            </div>
+            
+            <!-- Registration Count Display -->
+            <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(102, 126, 234, 0.2);">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <span style="font-size: 0.9rem; color: #666; font-weight: 600;">Total Registrations:</span>
+                  <span id="total-registrations-count" style="font-size: 1.5rem; font-weight: 700; color: #667eea; margin-left: 0.5rem;">0</span>
+                </div>
+                <div id="filtered-count-display" style="display: none;">
+                  <span style="font-size: 0.9rem; color: #666; font-weight: 600;">Filtered Results:</span>
+                  <span id="filtered-registrations-count" style="font-size: 1.5rem; font-weight: 700; color: #764ba2; margin-left: 0.5rem;">0</span>
+                </div>
+                <div id="group-count-display" style="display: none;">
+                  <span style="font-size: 0.9rem; color: #666; font-weight: 600;">Group <span id="selected-group-name"></span>:</span>
+                  <span id="group-registrations-count" style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin-left: 0.5rem;">0</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Filters Section -->
+            <div style="background: rgba(255, 255, 255, 0.95); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary); font-size: 1.1rem; font-weight: 700;">Filters</h5>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label for="filter-sort" style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Sort by Name</label>
+                  <select id="filter-sort" onchange="renderRegistrationsList()" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.9rem; background: #fff;">
+                    <option value="date">Date (Newest First)</option>
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                  </select>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label for="filter-group" style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Filter by Group</label>
+                  <select id="filter-group" onchange="renderRegistrationsList()" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.9rem; background: #fff;">
+                    <option value="all">All Groups</option>
+                    <option value="A">Group A</option>
+                    <option value="B">Group B</option>
+                    <option value="C">Group C</option>
+                    <option value="D">Group D</option>
+                  </select>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label for="filter-review" style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Review Status</label>
+                  <select id="filter-review" onchange="renderRegistrationsList()" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.9rem; background: #fff;">
+                    <option value="all">All</option>
+                    <option value="reviewed">Reviewed</option>
+                    <option value="unreviewed">Unreviewed</option>
+                  </select>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label for="filter-paid" style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; display: block;">Paid Status</label>
+                  <select id="filter-paid" onchange="renderRegistrationsList()" style="width: 100%; padding: 0.75rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.9rem; background: #fff;">
+                    <option value="all">All</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div id="registrations-list-container" style="margin-top: 2rem; width: 100%;">
+              <table id="registrations-table" style="width: 100%; border-collapse: collapse; background: rgba(255, 255, 255, 0.95); border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <thead>
+                  <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff;">
+                    <th style="padding: 1rem; text-align: center; font-weight: 700; font-size: 0.9rem; width: 50px;">
+                      <input type="checkbox" id="select-all-registrations" onchange="toggleSelectAll(this)" style="width: 18px; height: 18px; cursor: pointer;" title="Select All" />
+                    </th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">#</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Name</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Company</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Mobile</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Group</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Time</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Date</th>
+                    <th style="padding: 1rem; text-align: left; font-weight: 700; font-size: 0.9rem;">Day</th>
+                    <th style="padding: 1rem; text-align: center; font-weight: 700; font-size: 0.9rem;">Review</th>
+                    <th style="padding: 1rem; text-align: center; font-weight: 700; font-size: 0.9rem;">Paid</th>
+                  </tr>
+                </thead>
+                <tbody id="registrations-table-body">
+                  <!-- Registrations will be dynamically added here -->
+                </tbody>
+              </table>
+              <div id="no-registrations" style="display: none; text-align: center; padding: 3rem; color: #666; font-style: italic;">
+                No registrations found.
+              </div>
+            </div>
+            
+            <!-- Export to Excel Section -->
+            <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; margin-bottom: 1.5rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: #10b981; font-size: 1.1rem; font-weight: 700;">Export to Excel</h5>
+              <p style="color: #666; font-size: 0.85rem; margin-bottom: 1rem;">Export registrations to Excel file. The export will include all registrations matching your current filters.</p>
+              <button type="button" onclick="exportToExcel()" style="padding: 0.875rem 2rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95rem; font-weight: 700; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); display: inline-flex; align-items: center; gap: 0.5rem;">
+                <span>📊</span>
+                <span>Export to Excel</span>
+              </button>
+            </div>
+            
+            <!-- Deletion Section -->
+            <div style="background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(239, 68, 68, 0.3);">
+              <h5 style="margin-top: 0; margin-bottom: 1rem; color: #ef4444; font-size: 1.1rem; font-weight: 700;">Delete Registrations</h5>
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button type="button" onclick="deleteSelectedRegistrations()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);">
+                  Delete Selected
+                </button>
+                <button type="button" onclick="deletePaidRegistrations()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);">
+                  Delete Paid Only
+                </button>
+                <button type="button" onclick="deleteAllRegistrations()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">
+                  Delete All
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="admin-logout hidden">
+          <button type="button" class="admin-logout-btn" onclick="adminLogout()" id="admin-logout-btn">Logout</button>
+        </div>
+        <div style="text-align: center; color: #666; font-size: 0.9rem;" id="admin-note">
+          Admin features and data management will be available here.
+        </div>
+      </div>
+    </div>
+    <div class="main-content" id="mainContent">
+      <!-- Registration Countdown Display -->
+      <div id="registration-countdown" style="display: none; padding: 1.5rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border: 2px solid rgba(102, 126, 234, 0.3); border-radius: 16px; margin-bottom: 2rem; text-align: center;">
+        <div id="countdown-title" style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem;">Registration Opens In:</div>
+        <div id="countdown-timer" style="font-size: 1.5rem; font-weight: 800; color: #667eea; margin-bottom: 0.5rem;"></div>
+        <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+          <span id="time-label">Opening Time:</span> <span id="opening-time-display" style="font-weight: 600; color: var(--text-primary);"></span>
+        </div>
+      </div>
+      <form id="registrationForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="off" placeholder="Your name"/>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="off" placeholder="e.g. 07501234567" pattern="07[0-9]{9}" maxlength="11" minlength="11"/>
+      </div>
+      <div class="form-group" style="margin-top: 0.5rem;">
+        <button type="button" id="showCompanyNamesBelowPhone" onclick="showCompanyNamesList()" style="width: 100%; padding: 0.75rem 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);">
+          Show Company Names
+        </button>
+      </div>
+      <!-- Company name field removed - users will select from Company Names List -->
+      <input type="hidden" id="company" name="company" required />
+      <div class="form-group">
+        <label>Selected Company</label>
+        <div class="selected-company-display" id="selectedCompanyDisplay" onclick="toggleCompaniesList()" style="display: none; cursor: pointer;">
+          <span id="selectedCompanyText">Please select a company from the list below</span>
+          <span class="toggle-icon" style="float: right; font-size: 0.9rem; color: #667eea;">▼</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Selected Group</label>
+        <div class="selected-group-display" id="selectedGroupDisplay">
+          <span>Please select a group below</span>
+      </div>
+        <input type="hidden" id="group" name="group" required>
+      </div>
+    </form>
+      <!-- Manual Companies List Display -->
+      <div class="manual-companies-display" id="manualCompaniesDisplay" style="display: none;">
+        <h3 class="companies-display-title" style="margin: 0; margin-bottom: 1rem;">Company Names List</h3>
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="main-company-search-input" style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; display: block;">Search Companies</label>
+          <input type="text" id="main-company-search-input" placeholder="Type to search company names..." style="width: 100%; padding: 0.75rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; font-size: 0.9rem; font-family: inherit;" oninput="filterMainPageCompanies(this.value)" />
+  </div>
+        <div class="companies-display-list" id="companiesDisplayList">
+          <!-- Companies will be displayed here -->
+  </div>
+      </div>
+      
+      <!-- Group Information Display -->
+      <div class="groups-info" id="groupsInfo">
+        <h3 class="groups-info-title">Group Information</h3>
+        <div class="groups-grid">
+          <div class="group-card clickable" data-group="A" onclick="selectGroup('A')">
+            <div class="group-header">
+              <span class="group-letter">A</span>
+              <span class="group-number">Group A</span>
+            </div>
+            <div class="group-details">
+              <div class="group-remaining">
+                <span class="group-label">Places Left:</span>
+                <span class="group-value" id="groupA-remaining">10</span>
+              </div>
+              <div class="group-time">
+                <span class="group-label">Time:</span>
+                <span class="group-value" id="groupA-time">8:00 to 9:00</span>
+              </div>
+              <div class="group-date">
+                <span class="group-label">Date:</span>
+                <span class="group-value" id="groupA-date"></span>
+              </div>
+              <div class="group-day">
+                <span class="group-label">Day:</span>
+                <span class="group-value" id="groupA-day"></span>
+              </div>
+            </div>
+          </div>
+          <div class="group-card clickable" data-group="B" onclick="selectGroup('B')">
+            <div class="group-header">
+              <span class="group-letter">B</span>
+              <span class="group-number">Group B</span>
+            </div>
+            <div class="group-details">
+              <div class="group-remaining">
+                <span class="group-label">Places Left:</span>
+                <span class="group-value" id="groupB-remaining">10</span>
+              </div>
+              <div class="group-time">
+                <span class="group-label">Time:</span>
+                <span class="group-value" id="groupB-time">8:00 to 9:00</span>
+              </div>
+              <div class="group-date">
+                <span class="group-label">Date:</span>
+                <span class="group-value" id="groupB-date"></span>
+              </div>
+              <div class="group-day">
+                <span class="group-label">Day:</span>
+                <span class="group-value" id="groupB-day"></span>
+              </div>
+            </div>
+          </div>
+          <div class="group-card clickable" data-group="C" onclick="selectGroup('C')">
+            <div class="group-header">
+              <span class="group-letter">C</span>
+              <span class="group-number">Group C</span>
+            </div>
+            <div class="group-details">
+              <div class="group-remaining">
+                <span class="group-label">Places Left:</span>
+                <span class="group-value" id="groupC-remaining">10</span>
+              </div>
+              <div class="group-time">
+                <span class="group-label">Time:</span>
+                <span class="group-value" id="groupC-time">8:00 to 9:00</span>
+              </div>
+              <div class="group-date">
+                <span class="group-label">Date:</span>
+                <span class="group-value" id="groupC-date"></span>
+              </div>
+              <div class="group-day">
+                <span class="group-label">Day:</span>
+                <span class="group-value" id="groupC-day"></span>
+              </div>
+            </div>
+          </div>
+          <div class="group-card clickable" data-group="D" onclick="selectGroup('D')">
+            <div class="group-header">
+              <span class="group-letter">D</span>
+              <span class="group-number">Group D</span>
+            </div>
+            <div class="group-details">
+              <div class="group-remaining">
+                <span class="group-label">Places Left:</span>
+                <span class="group-value" id="groupD-remaining">10</span>
+              </div>
+              <div class="group-time">
+                <span class="group-label">Time:</span>
+                <span class="group-value" id="groupD-time">8:00 to 9:00</span>
+              </div>
+              <div class="group-date">
+                <span class="group-label">Date:</span>
+                <span class="group-value" id="groupD-date"></span>
+              </div>
+              <div class="group-day">
+                <span class="group-label">Day:</span>
+                <span class="group-value" id="groupD-day"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" form="registrationForm" style="margin-top: 2rem; width: 100%; padding: 0.875rem 2rem; font-size: 0.95rem;">Submit</button>
+      <div style="text-align: center; margin-top: 3rem; padding: 1.5rem; color: #666; font-size: 0.9rem; border-top: 1px solid rgba(102, 126, 234, 0.2);">
+        Developed by Mohammed Kamaran
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set document to English
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+    document.body.dir = 'ltr';
+    
+    // English text constants
+    const texts = {
+        lang: 'en',
+        dir: 'ltr',
+        title: 'Mobile Friendly Form',
+        admin: 'Admin',
+        adminTitle: 'Admin Panel',
+        adminLoginTitle: 'Login',
+        adminUsername: 'Username',
+        adminPassword: 'Password',
+        adminLoginBtn: 'Login',
+        adminUsernamePlaceholder: 'Enter username',
+        adminPasswordPlaceholder: 'Enter password',
+        adminLoginError: 'Please enter both username and password',
+        adminLoginSuccess: 'Login successful!',
+        adminLoginInvalid: 'Invalid username or password',
+        adminLogout: 'Logout',
+        adminNote: 'Admin features and data management will be available here.',
+        adminTabSettings: 'Settings',
+        adminTabUsers: 'Users',
+        adminTabRegistration: 'Registration',
+        settingsTitle: 'Settings',
+        settingsLabel: 'System Settings',
+        settingsDesc: 'Configure system preferences and options here.',
+        usersTitle: 'Users',
+        usersLabel: 'User Management',
+        usersDesc: 'View and manage user accounts here.',
+        usersListTitle: 'Users List',
+        userCountSingular: 'user',
+        userCountPlural: 'users',
+        addUserTitle: 'Add New User',
+        newUsernameLabel: 'Username',
+        newPasswordLabel: 'Password',
+        addUserBtn: 'Add User',
+        editUser: 'Edit',
+        deleteUser: 'Delete',
+        saveUser: 'Save',
+        cancelUser: 'Cancel',
+        adminRole: 'Admin',
+        userRole: 'User',
+        userDeleted: 'User deleted successfully',
+        userAdded: 'User added successfully',
+        userUpdated: 'Username updated successfully',
+        usernameRequired: 'Username is required',
+        passwordRequired: 'Password is required',
+        cannotDeleteSelf: 'You cannot delete your own account',
+        confirmDeleteUser: 'Are you sure you want to delete this user?',
+        usernameExists: 'Username already exists',
+        registrationTitle: 'Registration',
+        registrationLabel: 'Registration Management',
+        registrationDesc: 'View and manage form registrations here.',
+        totalSubmissions: 'Total Submissions',
+        name: 'Name',
+        namePlaceholder: 'Your name',
+        phone: 'Phone number',
+        phonePlaceholder: 'e.g. 07501234567',
+        company: 'Company name',
+        companyPlaceholder: 'Company',
+        group: 'Group selection',
+        selectGroup: 'Select group',
+        pleaseSelectGroup: 'Please select a group above',
+        submit: 'Submit',
+        groupFull: 'This group is full. Please select another group.',
+        registrationSuccess: 'Registration successful!'
+    };
+
+    // Remove all language switching functions - not needed for English only
+    function toggleLangDropdown() {}
+    function selectLanguage() {}
+
+    function toggleAdminPanel(event) {
+      if (event) {
+        event.stopPropagation();
+      }
+      const panel = document.getElementById('adminPanel');
+      const mainContent = document.getElementById('mainContent');
+      const adminSection = document.querySelector('.admin-section');
+      const container = document.querySelector('.container');
+      const isShowing = panel.classList.contains('show');
+      
+      panel.classList.toggle('show');
+      
+      // Hide main content when admin panel is shown, show it when admin panel is hidden (if not logged in)
+      if (!isShowing) {
+        // Admin panel is being opened - hide main content and make admin fullscreen
+        mainContent.classList.add('hidden');
+        adminSection.classList.add('fullscreen');
+        container.classList.add('admin-mode');
+        document.body.style.overflow = 'hidden';
+      } else if (!isAdminLoggedIn) {
+        // Admin panel is being closed and user is not logged in - show main content and exit fullscreen
+        mainContent.classList.remove('hidden');
+        adminSection.classList.remove('fullscreen');
+        container.classList.remove('admin-mode');
+        document.body.style.overflow = '';
+      }
+    }
+
+    let isAdminLoggedIn = false;
+    let currentUserRole = null;
+
+    // Handle Enter key press in login fields
+    function handleLoginKeyPress(event) {
+      if (event.key === 'Enter' || event.keyCode === 13) {
+        event.preventDefault();
+        adminLogin();
+      }
+    }
+    
+    function adminLogin() {
+      const username = document.getElementById('admin-username').value.trim();
+      const password = document.getElementById('admin-password').value;
+      
+      if (!username || !password) {
+        alert(texts.adminLoginError);
+        return;
+      }
+      
+      // Ensure users are loaded
+      if (!users || users.length === 0) {
+        initUsers();
+      }
+      
+      // Check credentials against users array
+      const user = users.find(u => 
+        u.username.toLowerCase() === username.toLowerCase() && 
+        u.password === password
+      );
+      
+      if (user) {
+        isAdminLoggedIn = true;
+        currentUserRole = user.role; // Store the logged-in user's role
+        
+        // Hide login form and show admin content and logout button
+        document.querySelector('.admin-login').classList.add('hidden');
+        document.getElementById('adminContent').classList.remove('hidden');
+        document.querySelector('.admin-logout').classList.remove('hidden');
+        
+        // Hide main content (form and language selector) and make admin fullscreen
+        document.getElementById('mainContent').classList.add('hidden');
+        const adminSection = document.querySelector('.admin-section');
+        const container = document.querySelector('.container');
+        adminSection.classList.add('fullscreen');
+        container.classList.add('admin-mode');
+        document.body.style.overflow = 'hidden';
+        
+        // Show/hide tabs based on user role
+        updateTabsForUserRole(user.role);
+        
+        // Render users if Users tab is active (only for admin)
+        if (user.role === 'admin') {
+          renderUsers();
+          // Load settings into form if Settings tab is active (only for admin)
+          loadSettingsIntoForm();
+          // Setup date listeners
+          setTimeout(setupDateChangeListeners, 100);
+        } else {
+          // For accountant: ONLY Registration section is accessible, Settings/Users are locked
+          const registrationTab = document.getElementById('tab-registration');
+          const registrationSection = document.getElementById('section-registration');
+          const settingsSection = document.getElementById('section-settings');
+          const usersSection = document.getElementById('section-users');
+          
+          // Remove active from all tabs and sections
+          document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.classList.remove('active');
+          });
+          document.querySelectorAll('.admin-content-section').forEach(sec => {
+            sec.classList.remove('active');
+            sec.style.display = 'none';
+            sec.style.visibility = 'hidden';
+          });
+          
+          // Lock Settings and Users sections - accountants can't use them
+          if (settingsSection) {
+            settingsSection.style.display = 'none';
+            settingsSection.style.visibility = 'hidden';
+          }
+          if (usersSection) {
+            usersSection.style.display = 'none';
+            usersSection.style.visibility = 'hidden';
+          }
+          
+          // Activate ONLY Registration tab and section
+          if (registrationTab) {
+            registrationTab.classList.add('active');
+            registrationTab.style.display = 'block';
+            registrationTab.style.visibility = 'visible';
+          }
+          if (registrationSection) {
+            registrationSection.classList.add('active');
+            registrationSection.style.display = 'block';
+            registrationSection.style.visibility = 'visible';
+          }
+          
+          // Render registrations list for accountant
+          setTimeout(() => {
+            renderRegistrationsList();
+          }, 100);
+        }
+        
+        // Clear login fields
+        document.getElementById('admin-username').value = '';
+        document.getElementById('admin-password').value = '';
+      } else {
+        alert(texts.adminLoginInvalid);
+        // Clear password field
+        document.getElementById('admin-password').value = '';
+      }
+    }
+
+    function adminLogout() {
+      isAdminLoggedIn = false;
+      currentUserRole = null;
+      
+      // Show login form and hide admin content and logout button
+      document.querySelector('.admin-login').classList.remove('hidden');
+      document.getElementById('adminContent').classList.add('hidden');
+      document.querySelector('.admin-logout').classList.add('hidden');
+      
+      // Reset tabs visibility
+      updateTabsForUserRole(null);
+      
+      // Exit fullscreen mode
+      const adminSection = document.querySelector('.admin-section');
+      const container = document.querySelector('.container');
+      const panel = document.getElementById('adminPanel');
+      adminSection.classList.remove('fullscreen');
+      container.classList.remove('admin-mode');
+      panel.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      // Show main content
+      document.getElementById('mainContent').classList.remove('hidden');
+      
+      // Clear login fields
+      document.getElementById('admin-username').value = '';
+      document.getElementById('admin-password').value = '';
+    }
+
+    // User Management
+    let users = [];
+    let editingUserId = null;
+
+    // Initialize users with admin account
+    function initUsers() {
+      const storedUsers = localStorage.getItem('users');
+      if (storedUsers) {
+        users = JSON.parse(storedUsers);
+      } else {
+        // Initialize with admin user
+        users = [
+          { id: 1, username: 'NAME', password: '777', role: 'admin' }
+        ];
+        saveUsers();
+      }
+      renderUsers();
+    }
+
+    function saveUsers() {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    function renderUsers() {
+      const userList = document.getElementById('userList');
+      
+      // Clear and add header
+      const countText = users.length === 1 ? texts.userCountSingular : texts.userCountPlural;
+      userList.innerHTML = `
+        <div class="user-list-header">
+          <h5 id="users-list-title">${texts.usersListTitle}</h5>
+          <span class="user-count" id="user-count">${users.length} ${countText}</span>
+        </div>
+      `;
+      
+      // Separate users by role
+      const adminUsers = users.filter(user => user.role === 'admin');
+      const accountantUsers = users.filter(user => user.role === 'accountant');
+      
+      // Create Admin section
+      if (adminUsers.length > 0) {
+        const adminSection = document.createElement('div');
+        adminSection.className = 'user-role-section';
+        adminSection.innerHTML = `
+          <div class="user-role-section-header">
+            <h6 class="user-role-title admin-title">${texts.adminRole} (${adminUsers.length})</h6>
+          </div>
+          <div class="users-container" id="admin-users-container"></div>
+        `;
+        userList.appendChild(adminSection);
+        
+        const adminContainer = document.getElementById('admin-users-container');
+        adminUsers.forEach(user => {
+          const userItem = createUserItem(user);
+          adminContainer.appendChild(userItem);
+        });
+      }
+      
+      // Create Accountant section
+      if (accountantUsers.length > 0) {
+        const accountantSection = document.createElement('div');
+        accountantSection.className = 'user-role-section';
+        accountantSection.innerHTML = `
+          <div class="user-role-section-header">
+            <h6 class="user-role-title accountant-title">${texts.accountantRole} (${accountantUsers.length})</h6>
+          </div>
+          <div class="users-container" id="accountant-users-container"></div>
+        `;
+        userList.appendChild(accountantSection);
+        
+        const accountantContainer = document.getElementById('accountant-users-container');
+        accountantUsers.forEach(user => {
+          const userItem = createUserItem(user);
+          accountantContainer.appendChild(userItem);
+        });
+      }
+    }
+    
+    // Helper function to create user item
+    function createUserItem(user) {
+      const userItem = document.createElement('div');
+      userItem.className = 'user-item';
+      userItem.id = 'user-' + user.id;
+      
+      // Get first letter of username for avatar
+      const avatarLetter = user.username.charAt(0).toUpperCase();
+      const isAdmin = user.role === 'admin';
+      const isAccountant = user.role === 'accountant';
+      const roleClass = isAdmin ? 'admin' : (isAccountant ? 'accountant' : '');
+      const roleText = isAdmin ? texts.adminRole : (isAccountant ? texts.accountantRole : texts.userRole);
+      
+      if (editingUserId === user.id) {
+        // Edit mode
+        userItem.innerHTML = `
+          <div class="user-info">
+            <div class="user-avatar ${roleClass}">${avatarLetter}</div>
+            <div class="user-details">
+              <input type="text" class="user-edit-input" id="edit-username-${user.id}" value="${user.username}" style="width: 200px; padding: 0.5rem; font-size: 1rem; margin-bottom: 0.5rem;" />
+              <select id="edit-role-${user.id}" class="user-role-select" style="width: 200px; padding: 0.5rem; font-size: 0.9rem; border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 6px;">
+                <option value="accountant" ${user.role === 'accountant' ? 'selected' : ''}>${texts.accountantRole}</option>
+                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>${texts.adminRole}</option>
+              </select>
+            </div>
+          </div>
+          <div class="user-actions">
+            <button class="btn-save" onclick="saveUser(${user.id})">${texts.saveUser}</button>
+            <button class="btn-cancel" onclick="cancelEdit()">${texts.cancelUser}</button>
+          </div>
+        `;
+      } else {
+        // View mode
+        userItem.innerHTML = `
+          <div class="user-info">
+            <div class="user-avatar ${roleClass}">${avatarLetter}</div>
+            <div class="user-details">
+              <span class="user-username">${user.username}</span>
+              <span class="user-role ${roleClass}">${roleText}</span>
+            </div>
+          </div>
+          <div class="user-actions">
+            <button class="btn-edit" onclick="editUser(${user.id})">${texts.editUser}</button>
+            ${user.username !== 'NAME' ? `<button class="btn-delete" onclick="deleteUser(${user.id})">${texts.deleteUser}</button>` : ''}
+          </div>
+        `;
+      }
+      
+      return userItem;
+    }
+
+    function addUser() {
+      const username = document.getElementById('new-username').value.trim();
+      const password = document.getElementById('new-password').value.trim();
+      
+      if (!username) {
+        alert(texts.usernameRequired);
+        return;
+      }
+      
+      if (!password) {
+        alert(texts.passwordRequired);
+        return;
+      }
+      
+      // Check if username already exists
+      if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+        alert(texts.usernameExists);
+        return;
+      }
+      
+      const newUser = {
+        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+        username: username,
+        password: password,
+        role: 'user'
+      };
+      
+      users.push(newUser);
+      saveUsers();
+      renderUsers();
+      
+      // Clear form
+      document.getElementById('new-username').value = '';
+      document.getElementById('new-password').value = '';
+      
+      alert(texts.userAdded);
+    }
+
+    function editUser(userId) {
+      editingUserId = userId;
+      renderUsers();
+    }
+
+    function saveUser(userId) {
+      const newUsername = document.getElementById('edit-username-' + userId).value.trim();
+      
+      if (!newUsername) {
+        alert(texts.usernameRequired);
+        return;
+      }
+      
+      // Check if username already exists (except for current user)
+      if (users.some(u => u.id !== userId && u.username.toLowerCase() === newUsername.toLowerCase())) {
+        alert(texts.usernameExists);
+        return;
+      }
+      
+      const user = users.find(u => u.id === userId);
+      if (user) {
+        user.username = newUsername;
+        saveUsers();
+        editingUserId = null;
+        renderUsers();
+        alert(texts.userUpdated);
+      }
+    }
+
+    function cancelEdit() {
+      editingUserId = null;
+      renderUsers();
+    }
+
+    function deleteUser(userId) {
+      const user = users.find(u => u.id === userId);
+      
+      if (!user) return;
+      
+      // Prevent deleting own account
+      if (user.username === 'NAME') {
+        alert(texts.cannotDeleteSelf);
+        return;
+      }
+      
+      if (confirm(texts.confirmDeleteUser)) {
+        users = users.filter(u => u.id !== userId);
+        saveUsers();
+        renderUsers();
+        alert(texts.userDeleted);
+      }
+    }
+
+    // Update tabs visibility based on user role
+    function updateTabsForUserRole(role) {
+      const settingsTab = document.getElementById('tab-settings');
+      const usersTab = document.getElementById('tab-users');
+      const registrationTab = document.getElementById('tab-registration');
+      const settingsSection = document.getElementById('section-settings');
+      const usersSection = document.getElementById('section-users');
+      
+      if (role === 'accountant') {
+        // Completely hide and lock Settings and Users tabs for accountant
+        if (settingsTab) {
+          settingsTab.style.display = 'none';
+          settingsTab.style.visibility = 'hidden';
+          settingsTab.classList.remove('active');
+        }
+        if (usersTab) {
+          usersTab.style.display = 'none';
+          usersTab.style.visibility = 'hidden';
+          usersTab.classList.remove('active');
+        }
+        // Show only Registration tab
+        if (registrationTab) {
+          registrationTab.style.display = 'block';
+          registrationTab.style.visibility = 'visible';
+        }
+        
+        // Lock and hide Settings and Users sections - accountants can't use them
+        if (settingsSection) {
+          settingsSection.classList.remove('active');
+          settingsSection.style.display = 'none';
+          settingsSection.style.visibility = 'hidden';
+        }
+        if (usersSection) {
+          usersSection.classList.remove('active');
+          usersSection.style.display = 'none';
+          usersSection.style.visibility = 'hidden';
+        }
+        
+        // Ensure Registration section is open and active
+        const registrationSection = document.getElementById('section-registration');
+        if (registrationSection) {
+          registrationSection.classList.add('active');
+          registrationSection.style.display = 'block';
+          registrationSection.style.visibility = 'visible';
+        }
+        if (registrationTab) {
+          registrationTab.classList.add('active');
+        }
+      } else if (role === 'admin') {
+        // Show all tabs for admin
+        if (settingsTab) settingsTab.style.display = 'block';
+        if (usersTab) usersTab.style.display = 'block';
+        if (registrationTab) registrationTab.style.display = 'block';
+      } else {
+        // Default: show all tabs (for logout or no role)
+        if (settingsTab) settingsTab.style.display = 'block';
+        if (usersTab) usersTab.style.display = 'block';
+        if (registrationTab) registrationTab.style.display = 'block';
+      }
+    }
+
+    function switchAdminTab(section, tabElement) {
+      // Strictly enforce: Accountants can ONLY access Registration section - Settings/Users are locked
+      if (currentUserRole === 'accountant') {
+        if (section !== 'registration') {
+          alert('Access denied. Accountants can only access the Registration section. Settings and Users are locked.');
+          // Force redirect to Registration section
+          const registrationTab = document.getElementById('tab-registration');
+          const registrationSection = document.getElementById('section-registration');
+          
+          // Hide all sections
+          document.querySelectorAll('.admin-content-section').forEach(sec => {
+            sec.classList.remove('active');
+            sec.style.display = 'none';
+            sec.style.visibility = 'hidden';
+          });
+          
+          // Remove active from all tabs
+          document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.classList.remove('active');
+          });
+          
+          // Activate only Registration section
+          if (registrationTab) {
+            registrationTab.classList.add('active');
+          }
+          if (registrationSection) {
+            registrationSection.classList.add('active');
+            registrationSection.style.display = 'block';
+            registrationSection.style.visibility = 'visible';
+          }
+          return;
+        }
+      }
+      
+      // Remove active class from all tabs and sections
+      document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.admin-content-section').forEach(sec => {
+        sec.classList.remove('active');
+        sec.style.display = 'none'; // Explicitly hide all sections
+      });
+      
+      // Add active class to clicked tab and corresponding section
+      tabElement.classList.add('active');
+      const targetSection = document.getElementById('section-' + section);
+      if (targetSection) {
+        targetSection.classList.add('active');
+        targetSection.style.display = 'block'; // Explicitly show the selected section
+      }
+      
+      // If switching to Users tab, render users (only for admin)
+      if (section === 'users' && currentUserRole === 'admin') {
+        renderUsers();
+      }
+      
+      // If switching to Settings tab, load settings into form (only for admin)
+      if (section === 'settings' && currentUserRole === 'admin') {
+        loadSettingsIntoForm();
+        loadWebsiteSettingsIntoForm();
+        renderManualCompanies();
+        // Setup date listeners if not already set up
+        setTimeout(setupDateChangeListeners, 100);
+        // Update group info to ensure main page reflects current settings
+        updateGroupInfo();
+      }
+      
+      // If switching to Registration tab, render registrations list
+      if (section === 'registration') {
+        renderRegistrationsList();
+      }
+    }
+    
+    // Render registrations list in the Registration section
+    function renderRegistrationsList() {
+      const registrations = getRegistrations();
+      const tableBody = document.getElementById('registrations-table-body');
+      const noRegistrations = document.getElementById('no-registrations');
+      const table = document.getElementById('registrations-table');
+      
+      if (!tableBody) return;
+      
+      // Get filter values
+      const sortFilter = document.getElementById('filter-sort') ? document.getElementById('filter-sort').value : 'date';
+      const groupFilter = document.getElementById('filter-group') ? document.getElementById('filter-group').value : 'all';
+      const reviewFilter = document.getElementById('filter-review') ? document.getElementById('filter-review').value : 'all';
+      const paidFilter = document.getElementById('filter-paid') ? document.getElementById('filter-paid').value : 'all';
+      
+      // Apply filters
+      let filteredRegistrations = registrations.filter(reg => {
+        // Filter by group
+        if (groupFilter !== 'all' && reg.group !== groupFilter) return false;
+        
+        // Filter by review status
+        if (reviewFilter === 'reviewed' && !reg.reviewed) return false;
+        if (reviewFilter === 'unreviewed' && reg.reviewed) return false;
+        
+        // Filter by paid status
+        if (paidFilter === 'paid' && !reg.paid) return false;
+        if (paidFilter === 'unpaid' && reg.paid) return false;
+        
+        return true;
+      });
+      
+      // Update registration counts
+      const totalCountEl = document.getElementById('total-registrations-count');
+      const filteredCountEl = document.getElementById('filtered-registrations-count');
+      const filteredDisplayEl = document.getElementById('filtered-count-display');
+      const groupCountEl = document.getElementById('group-registrations-count');
+      const groupDisplayEl = document.getElementById('group-count-display');
+      const selectedGroupNameEl = document.getElementById('selected-group-name');
+      
+      // Update total count
+      if (totalCountEl) {
+        totalCountEl.textContent = registrations.length;
+      }
+      
+      // Update filtered count
+      if (filteredCountEl) {
+        filteredCountEl.textContent = filteredRegistrations.length;
+      }
+      
+      // Show/hide filtered count display
+      if (filteredDisplayEl) {
+        const hasFilters = groupFilter !== 'all' || reviewFilter !== 'all' || paidFilter !== 'all';
+        filteredDisplayEl.style.display = hasFilters ? 'block' : 'none';
+      }
+      
+      // Update group-specific count
+      if (groupFilter !== 'all') {
+        const groupCount = filteredRegistrations.length;
+        if (groupCountEl) {
+          groupCountEl.textContent = groupCount;
+        }
+        if (selectedGroupNameEl) {
+          selectedGroupNameEl.textContent = groupFilter;
+        }
+        if (groupDisplayEl) {
+          groupDisplayEl.style.display = 'block';
+        }
+      } else {
+        if (groupDisplayEl) {
+          groupDisplayEl.style.display = 'none';
+        }
+      }
+      
+      if (filteredRegistrations.length === 0) {
+        table.style.display = 'none';
+        noRegistrations.style.display = 'block';
+        noRegistrations.textContent = 'No registrations found matching the filters.';
+        return;
+      }
+      
+      table.style.display = 'table';
+      noRegistrations.style.display = 'none';
+      
+      // Apply sorting
+      let sortedRegistrations = [...filteredRegistrations];
+      
+      if (sortFilter === 'name-asc') {
+        // Sort by name A-Z
+        sortedRegistrations.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+      } else if (sortFilter === 'name-desc') {
+        // Sort by name Z-A
+        sortedRegistrations.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameB.localeCompare(nameA);
+        });
+      } else {
+        // Default: Sort by review/paid status and date
+        sortedRegistrations.sort((a, b) => {
+          // First priority: separate reviewed and unreviewed
+          if (a.reviewed && !b.reviewed) return 1; // a is reviewed, b is not - b comes first
+          if (!a.reviewed && b.reviewed) return -1; // a is not reviewed, b is - a comes first
+          
+          // Second priority: within same review status, separate paid and unpaid
+          if (a.reviewed === b.reviewed) {
+            if (a.paid && !b.paid) return 1; // a is paid, b is not - b comes first
+            if (!a.paid && b.paid) return -1; // a is not paid, b is - a comes first
+          }
+          
+          // Third priority: sort by date (newest first)
+          return new Date(b.date) - new Date(a.date);
+        });
+      }
+      
+      tableBody.innerHTML = sortedRegistrations.map((reg, index) => {
+        const groupConfigData = groupConfig[reg.group] || {};
+        const time = groupConfigData.time || 'N/A';
+        const dateStr = groupConfigData.date || '';
+        const day = groupConfigData.day || '';
+        const formattedDate = dateStr ? formatDate(new Date(dateStr + 'T00:00:00')) : 'N/A';
+        
+        const paidStyle = reg.paid ? 'text-decoration: line-through; opacity: 0.6;' : '';
+        
+        // Determine background color based on review and paid status
+        let rowBackground = '';
+        if (reg.paid && reg.reviewed) {
+          rowBackground = 'background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);'; // Green for both paid and reviewed
+        } else if (reg.paid) {
+          rowBackground = 'background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);'; // Red for paid
+        } else if (reg.reviewed) {
+          rowBackground = 'background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);'; // Blue for reviewed
+        }
+        
+        return `
+          <tr style="border-bottom: 1px solid rgba(102, 126, 234, 0.1); transition: background 0.2s; ${rowBackground}" onmouseover="this.style.background='${reg.paid && reg.reviewed ? 'rgba(16, 185, 129, 0.25)' : reg.paid ? 'rgba(239, 68, 68, 0.25)' : reg.reviewed ? 'rgba(59, 130, 246, 0.25)' : 'rgba(102, 126, 234, 0.05)'}'" onmouseout="this.style.background='${rowBackground}'">
+            <td style="padding: 1rem; text-align: center;">
+              <input type="checkbox" class="registration-checkbox" data-registration-id="${reg.id}" style="width: 18px; height: 18px; cursor: pointer;" />
+            </td>
+            <td style="padding: 1rem; font-weight: 600; color: #667eea; ${paidStyle}">${index + 1}</td>
+            <td style="padding: 1rem; ${paidStyle}">${reg.name || 'N/A'}</td>
+            <td style="padding: 1rem; ${paidStyle}; cursor: pointer; user-select: none;" onclick="copyToClipboard('${(reg.company || 'N/A').replace(/'/g, "\\'")}')" title="Click to copy company name">${reg.company || 'N/A'}</td>
+            <td style="padding: 1rem; ${paidStyle}; cursor: pointer; color: #25D366; text-decoration: underline;" onclick="openWhatsApp('${reg.phone || ''}')" title="Click to open WhatsApp">${reg.phone || 'N/A'}</td>
+            <td style="padding: 1rem; font-weight: 600; color: #667eea; ${paidStyle}">Group ${reg.group}</td>
+            <td style="padding: 1rem; ${paidStyle}">${time}</td>
+            <td style="padding: 1rem; ${paidStyle}">${formattedDate}</td>
+            <td style="padding: 1rem; ${paidStyle}">${day || 'N/A'}</td>
+            <td style="padding: 1rem; text-align: center;">
+              <input type="checkbox" ${reg.reviewed ? 'checked' : ''} onchange="toggleReview(${reg.id})" style="width: 20px; height: 20px; cursor: pointer;" />
+            </td>
+            <td style="padding: 1rem; text-align: center;">
+              <input type="checkbox" ${reg.paid ? 'checked' : ''} onchange="togglePaid(${reg.id})" style="width: 20px; height: 20px; cursor: pointer;" />
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+    
+    // Toggle review status
+    function toggleReview(registrationId) {
+      const registrations = getRegistrations();
+      const registration = registrations.find(r => r.id === registrationId);
+      if (registration) {
+        registration.reviewed = !registration.reviewed;
+        localStorage.setItem('registrations', JSON.stringify(registrations));
+        renderRegistrationsList();
+      }
+    }
+    
+    // Toggle paid status
+    function togglePaid(registrationId) {
+      const registrations = getRegistrations();
+      const registration = registrations.find(r => r.id === registrationId);
+      if (registration) {
+        registration.paid = !registration.paid;
+        localStorage.setItem('registrations', JSON.stringify(registrations));
+        renderRegistrationsList();
+      }
+    }
+    
+    // Toggle select all registrations
+    function toggleSelectAll(checkbox) {
+      const checkboxes = document.querySelectorAll('.registration-checkbox');
+      checkboxes.forEach(cb => {
+        cb.checked = checkbox.checked;
+      });
+    }
+    
+    // Delete selected registrations
+    function deleteSelectedRegistrations() {
+      const checkboxes = document.querySelectorAll('.registration-checkbox:checked');
+      if (checkboxes.length === 0) {
+        alert('Please select at least one registration to delete.');
+        return;
+      }
+      
+      const selectedIds = Array.from(checkboxes).map(cb => parseInt(cb.getAttribute('data-registration-id')));
+      
+      if (confirm(`Are you sure you want to delete ${selectedIds.length} selected registration(s)? This action cannot be undone.`)) {
+        const registrations = getRegistrations();
+        const filteredRegistrations = registrations.filter(reg => !selectedIds.includes(reg.id));
+        localStorage.setItem('registrations', JSON.stringify(filteredRegistrations));
+        
+        // Force immediate refresh
+        requestAnimationFrame(() => {
+          renderRegistrationsList();
+          updateGroupInfo();
+        });
+        
+        // Show notification after UI update
+        setTimeout(() => {
+          alert(`${selectedIds.length} registration(s) deleted successfully.`);
+        }, 50);
+      }
+    }
+    
+    // Delete all paid registrations
+    function deletePaidRegistrations() {
+      const registrations = getRegistrations();
+      const paidRegistrations = registrations.filter(reg => reg.paid);
+      
+      if (paidRegistrations.length === 0) {
+        alert('No paid registrations found.');
+        return;
+      }
+      
+      if (confirm(`Are you sure you want to delete all ${paidRegistrations.length} paid registration(s)? This action cannot be undone.`)) {
+        const filteredRegistrations = registrations.filter(reg => !reg.paid);
+        localStorage.setItem('registrations', JSON.stringify(filteredRegistrations));
+        
+        // Force immediate refresh
+        requestAnimationFrame(() => {
+          renderRegistrationsList();
+          updateGroupInfo();
+        });
+        
+        // Show notification after UI update
+        setTimeout(() => {
+          alert(`${paidRegistrations.length} paid registration(s) deleted successfully.`);
+        }, 50);
+      }
+    }
+    
+    // Delete all registrations
+    function deleteAllRegistrations() {
+      const registrations = getRegistrations();
+      
+      if (registrations.length === 0) {
+        alert('No registrations found.');
+        return;
+      }
+      
+      if (confirm(`Are you sure you want to delete ALL ${registrations.length} registration(s)? This action cannot be undone.`)) {
+        localStorage.setItem('registrations', JSON.stringify([]));
+        
+        // Force immediate refresh
+        requestAnimationFrame(() => {
+          renderRegistrationsList();
+          updateGroupInfo();
+        });
+        
+        // Show notification after UI update
+        setTimeout(() => {
+          alert('All registrations deleted successfully.');
+        }, 50);
+      }
+    }
+    
+    // Export to Excel function
+    function exportToExcel() {
+      const registrations = getRegistrations();
+      
+      if (registrations.length === 0) {
+        alert('No registrations found to export.');
+        return;
+      }
+      
+      // Get current filter values
+      const sortFilter = document.getElementById('filter-sort') ? document.getElementById('filter-sort').value : 'date';
+      const groupFilter = document.getElementById('filter-group') ? document.getElementById('filter-group').value : 'all';
+      const reviewFilter = document.getElementById('filter-review') ? document.getElementById('filter-review').value : 'all';
+      const paidFilter = document.getElementById('filter-paid') ? document.getElementById('filter-paid').value : 'all';
+      
+      // Apply the same filters as the display
+      let filteredRegistrations = registrations.filter(reg => {
+        if (groupFilter !== 'all' && reg.group !== groupFilter) return false;
+        if (reviewFilter === 'reviewed' && !reg.reviewed) return false;
+        if (reviewFilter === 'unreviewed' && reg.reviewed) return false;
+        if (paidFilter === 'paid' && !reg.paid) return false;
+        if (paidFilter === 'unpaid' && reg.paid) return false;
+        return true;
+      });
+      
+      if (filteredRegistrations.length === 0) {
+        alert('No registrations match the current filters.');
+        return;
+      }
+      
+      // Apply sorting
+      let sortedRegistrations = [...filteredRegistrations];
+      if (sortFilter === 'name-asc') {
+        sortedRegistrations.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+      } else if (sortFilter === 'name-desc') {
+        sortedRegistrations.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameB.localeCompare(nameA);
+        });
+      } else {
+        sortedRegistrations.sort((a, b) => {
+          if (a.reviewed && !b.reviewed) return 1;
+          if (!a.reviewed && b.reviewed) return -1;
+          if (a.reviewed === b.reviewed) {
+            if (a.paid && !b.paid) return 1;
+            if (!a.paid && b.paid) return -1;
+          }
+          return new Date(b.date) - new Date(a.date);
+        });
+      }
+      
+      // Create CSV content
+      const headers = ['Serial Number', 'Name', 'Company', 'Mobile', 'Group', 'Time', 'Date', 'Day', 'Review Status', 'Paid Status', 'Registration Date'];
+      let csvContent = headers.join(',') + '\n';
+      
+      sortedRegistrations.forEach((reg, index) => {
+        const groupConfigData = groupConfig[reg.group] || {};
+        const time = groupConfigData.time || 'N/A';
+        const dateStr = groupConfigData.date || '';
+        const day = groupConfigData.day || '';
+        const formattedDate = dateStr ? formatDate(new Date(dateStr + 'T00:00:00')) : 'N/A';
+        const regDate = new Date(reg.date);
+        const formattedRegDate = `${regDate.getDate().toString().padStart(2, '0')}/${(regDate.getMonth() + 1).toString().padStart(2, '0')}/${regDate.getFullYear()} ${regDate.getHours().toString().padStart(2, '0')}:${regDate.getMinutes().toString().padStart(2, '0')}`;
+        
+        const row = [
+          index + 1,
+          `"${(reg.name || 'N/A').replace(/"/g, '""')}"`,
+          `"${(reg.company || 'N/A').replace(/"/g, '""')}"`,
+          reg.phone || 'N/A',
+          `Group ${reg.group}`,
+          time,
+          formattedDate,
+          day || 'N/A',
+          reg.reviewed ? 'Yes' : 'No',
+          reg.paid ? 'Yes' : 'No',
+          formattedRegDate
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+      
+      // Create BOM for UTF-8 Excel compatibility
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+      
+      // Create download link
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      // Generate filename with current date and filter info
+      const now = new Date();
+      const dateStr = `${now.getDate().toString().padStart(2, '0')}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getFullYear()}`;
+      let filename = `Registrations_${dateStr}`;
+      if (groupFilter !== 'all') filename += `_Group${groupFilter}`;
+      if (reviewFilter !== 'all') filename += `_${reviewFilter}`;
+      if (paidFilter !== 'all') filename += `_${paidFilter}`;
+      filename += '.csv';
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      alert(`Successfully exported ${sortedRegistrations.length} registration(s) to Excel!`);
+    }
+    
+    // Copy company name to clipboard
+    function copyToClipboard(text) {
+      if (text === 'N/A') return;
+      
+      // Create a temporary textarea element
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        document.execCommand('copy');
+        // Show a brief visual feedback
+        const originalText = textarea.value;
+        alert(`Company name "${originalText}" copied to clipboard!`);
+      } catch (err) {
+        // Fallback for modern browsers
+        navigator.clipboard.writeText(text).then(() => {
+          alert(`Company name "${text}" copied to clipboard!`);
+        }).catch(() => {
+          alert('Failed to copy. Please try again.');
+        });
+      }
+      
+      document.body.removeChild(textarea);
+    }
+    
+    // Open WhatsApp with the phone number
+    function openWhatsApp(phone) {
+      if (!phone || phone === 'N/A') {
+        alert('No phone number available');
+        return;
+      }
+      
+      // Remove any spaces, dashes, or special characters
+      let cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+      
+      // Handle Iraqi mobile numbers (starting with 07)
+      // Convert to international format: 07501234567 -> 9647501234567
+      if (cleanPhone.startsWith('07')) {
+        cleanPhone = '964' + cleanPhone.substring(1); // Replace 0 with 964
+      } else if (cleanPhone.startsWith('0')) {
+        // If it starts with 0 but not 07, still convert
+        cleanPhone = '964' + cleanPhone.substring(1);
+      } else if (!cleanPhone.startsWith('+') && !cleanPhone.startsWith('964')) {
+        // If it doesn't start with + or 964, assume it's Iraqi and add 964
+        if (cleanPhone.length >= 10) {
+          cleanPhone = '964' + cleanPhone;
+        }
+      }
+      
+      // Remove + if present (wa.me doesn't need it)
+      cleanPhone = cleanPhone.replace(/^\+/, '');
+      
+      // Open WhatsApp with the phone number
+      const whatsappUrl = `https://wa.me/${cleanPhone}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+      const adminSection = document.querySelector('.admin-section');
+      const panel = document.getElementById('adminPanel');
+      const adminToggle = document.querySelector('.admin-toggle');
+      
+      // Only close admin panel if:
+      // 1. Panel is currently showing
+      // 2. Click is outside the admin section
+      // 3. Click is not on the admin toggle button
+      if (panel && panel.classList.contains('show') && 
+          !adminSection.contains(event.target) && 
+          !adminToggle.contains(event.target)) {
+        const container = document.querySelector('.container');
+        const wasShowing = panel.classList.contains('show');
+        panel.classList.remove('show');
+        
+        // Exit fullscreen and show main content if admin panel was closed and user is not logged in
+        if (wasShowing && !isAdminLoggedIn) {
+          adminSection.classList.remove('fullscreen');
+          container.classList.remove('admin-mode');
+          document.body.style.overflow = '';
+          document.getElementById('mainContent').classList.remove('hidden');
+        }
+      }
+    });
+
+    // Website Availability Management
+    let websiteSettings = {
+      openDate: '',
+      openTime: '',
+      duration: 60, // minutes
+      isActive: false,
+      activatedAt: null
+    };
+    
+    // Load website settings from localStorage
+    function loadWebsiteSettings() {
+      const saved = localStorage.getItem('websiteSettings');
+      if (saved) {
+        websiteSettings = { ...websiteSettings, ...JSON.parse(saved) };
+      }
+      return websiteSettings;
+    }
+    
+    // Save website settings to localStorage
+    function saveWebsiteSettingsToStorage() {
+      localStorage.setItem('websiteSettings', JSON.stringify(websiteSettings));
+    }
+    
+    // Check if registration is currently open
+    function isRegistrationOpen() {
+      if (!websiteSettings.isActive || !websiteSettings.activatedAt) {
+        return false;
+      }
+      
+      const activatedTime = new Date(websiteSettings.activatedAt);
+      const now = new Date();
+      const durationMs = websiteSettings.duration * 60 * 1000; // Convert minutes to milliseconds
+      const endTime = new Date(activatedTime.getTime() + durationMs);
+      
+      return now >= activatedTime && now <= endTime;
+    }
+    
+    // Update website status display
+    function updateWebsiteStatus() {
+      const statusEl = document.getElementById('website-status');
+      if (!statusEl) return;
+      
+      if (isRegistrationOpen()) {
+        const activatedTime = new Date(websiteSettings.activatedAt);
+        const durationMs = websiteSettings.duration * 60 * 1000;
+        const endTime = new Date(activatedTime.getTime() + durationMs);
+        const remaining = Math.max(0, Math.floor((endTime - new Date()) / 1000 / 60));
+        
+        statusEl.innerHTML = `Registration is OPEN<br><small>Closes in ${remaining} minutes</small>`;
+        statusEl.style.background = 'rgba(16, 185, 129, 0.1)';
+        statusEl.style.color = '#10b981';
+      } else {
+        statusEl.innerHTML = 'Registration is CLOSED';
+        statusEl.style.background = 'rgba(239, 68, 68, 0.1)';
+        statusEl.style.color = '#ef4444';
+      }
+    }
+    
+    // Save website settings
+    function saveWebsiteSettings() {
+      const openDate = document.getElementById('website-open-date').value;
+      const openTime = document.getElementById('website-open-time').value;
+      const duration = parseInt(document.getElementById('website-duration').value);
+      
+      if (!openDate || !openTime) {
+        alert('Please set both date and time for when registration opens.');
+        return;
+      }
+      
+      if (!duration || duration <= 0) {
+        alert('Please enter a valid duration in minutes.');
+        return;
+      }
+      
+      websiteSettings.openDate = openDate;
+      websiteSettings.openTime = openTime;
+      websiteSettings.duration = duration;
+      
+      // Don't activate automatically - admin must click "Activate Now"
+      saveWebsiteSettingsToStorage();
+      updateWebsiteStatus();
+      
+      alert('Website settings saved! Click "Activate Registration Now" to open registration.');
+    }
+    
+    // Activate website immediately
+    function activateWebsiteNow() {
+      const openDate = document.getElementById('website-open-date').value;
+      const openTime = document.getElementById('website-open-time').value;
+      const duration = parseInt(document.getElementById('website-duration').value);
+      
+      if (!openDate || !openTime) {
+        alert('Please set both date and time first, then save settings.');
+        return;
+      }
+      
+      if (!duration || duration <= 0) {
+        alert('Please enter a valid duration in minutes first.');
+        return;
+      }
+      
+      // Combine date and time
+      const activateDateTime = new Date(`${openDate}T${openTime}`);
+      websiteSettings.activatedAt = activateDateTime.toISOString();
+      websiteSettings.isActive = true;
+      websiteSettings.openDate = openDate;
+      websiteSettings.openTime = openTime;
+      websiteSettings.duration = duration;
+      
+      saveWebsiteSettingsToStorage();
+      updateWebsiteStatus();
+      checkRegistrationAvailability();
+      
+      alert(`Registration activated! It will be open for ${duration} minutes starting from ${openDate} ${openTime}.`);
+    }
+    
+    // Format time remaining
+    function formatTimeRemaining(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      
+      if (days > 0) {
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      } else if (hours > 0) {
+        return `${hours}h ${minutes}m ${seconds}s`;
+      } else if (minutes > 0) {
+        return `${minutes}m ${seconds}s`;
+      } else {
+        return `${seconds}s`;
+      }
+    }
+    
+    // Format date and time for display
+    function formatDateTime(date) {
+      const d = new Date(date);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      const hours = String(d.getHours()).padStart(2, '0');
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+      return `${day}/${month}/${year} at ${hours}:${minutes}`;
+    }
+    
+    // Update countdown display
+    function updateCountdownDisplay() {
+      const countdownEl = document.getElementById('registration-countdown');
+      const timerEl = document.getElementById('countdown-timer');
+      const openingTimeEl = document.getElementById('opening-time-display');
+      const countdownTitle = document.getElementById('countdown-title');
+      const timeLabel = document.getElementById('time-label');
+      
+      if (!countdownEl || !timerEl || !openingTimeEl || !countdownTitle || !timeLabel) return;
+      
+      const settings = loadWebsiteSettings();
+      const now = new Date();
+      
+      // Check if registration is currently open
+      if (isRegistrationOpen() && settings.activatedAt) {
+        // Calculate closing time
+        const activatedTime = new Date(settings.activatedAt);
+        const durationMs = settings.duration * 60 * 1000;
+        const closingDateTime = new Date(activatedTime.getTime() + durationMs);
+        
+        // Show closing countdown
+        countdownEl.style.display = 'block';
+        countdownEl.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        countdownEl.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%)';
+        countdownTitle.textContent = 'Registration Closes In:';
+        countdownTitle.style.color = '#10b981';
+        timeLabel.textContent = 'Closing Time:';
+        
+        // Calculate time remaining until closing
+        if (now < closingDateTime) {
+          const timeRemaining = closingDateTime - now;
+          timerEl.textContent = formatTimeRemaining(timeRemaining);
+          timerEl.style.color = '#10b981';
+          openingTimeEl.textContent = formatDateTime(closingDateTime);
+        } else {
+          // Registration has closed
+          timerEl.textContent = 'Registration has CLOSED';
+          timerEl.style.color = '#ef4444';
+          openingTimeEl.textContent = formatDateTime(closingDateTime);
+        }
+        return;
+      }
+      
+      // Registration is not open - show opening countdown
+      // Check if settings are configured
+      if (!settings.openDate || !settings.openTime) {
+        countdownEl.style.display = 'none';
+        return;
+      }
+      
+      const openingDateTime = new Date(`${settings.openDate}T${settings.openTime}`);
+      
+      // Reset styling for opening countdown
+      countdownEl.style.borderColor = 'rgba(102, 126, 234, 0.3)';
+      countdownEl.style.background = 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)';
+      countdownTitle.textContent = 'Registration Opens In:';
+      countdownTitle.style.color = 'var(--text-primary)';
+      timeLabel.textContent = 'Opening Time:';
+      
+      // Show opening time
+      openingTimeEl.textContent = formatDateTime(openingDateTime);
+      
+      // Check if opening time has passed but not activated
+      if (now >= openingDateTime && !settings.isActive) {
+        countdownEl.style.display = 'block';
+        timerEl.textContent = 'Waiting for activation...';
+        timerEl.style.color = '#f59e0b';
+        return;
+      }
+      
+      // Calculate time remaining until opening
+      if (now < openingDateTime) {
+        const timeRemaining = openingDateTime - now;
+        countdownEl.style.display = 'block';
+        timerEl.textContent = formatTimeRemaining(timeRemaining);
+        timerEl.style.color = '#667eea';
+      } else {
+        // Opening time has passed and not activated
+        countdownEl.style.display = 'none';
+      }
+    }
+    
+    // Check registration availability and enable/disable form
+    function checkRegistrationAvailability() {
+      const form = document.getElementById('registrationForm');
+      const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+      const mainContent = document.getElementById('mainContent');
+      
+      // Update countdown display
+      updateCountdownDisplay();
+      
+      if (isRegistrationOpen()) {
+        // Enable form
+        if (form) {
+          form.style.opacity = '1';
+          form.style.pointerEvents = 'auto';
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+        }
+        // Remove any "closed" message
+        let closedMsg = document.getElementById('registration-closed-message');
+        if (closedMsg) closedMsg.remove();
+        // Show closing countdown when open (don't hide it)
+      } else {
+        // Disable form
+        if (form) {
+          form.style.opacity = '0.5';
+          form.style.pointerEvents = 'none';
+        }
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.5';
+        }
+        // Show closed message only if no countdown is shown
+        const countdownEl = document.getElementById('registration-countdown');
+        if (!countdownEl || countdownEl.style.display === 'none') {
+          let closedMsg = document.getElementById('registration-closed-message');
+          if (!closedMsg && mainContent) {
+            closedMsg = document.createElement('div');
+            closedMsg.id = 'registration-closed-message';
+            closedMsg.style.cssText = 'padding: 1.5rem; background: rgba(239, 68, 68, 0.1); border: 2px solid #ef4444; border-radius: 12px; color: #ef4444; font-weight: 700; text-align: center; margin-bottom: 1.5rem;';
+            closedMsg.textContent = 'Registration is currently CLOSED. Please wait for the admin to activate it.';
+            if (form && form.parentNode) {
+              form.parentNode.insertBefore(closedMsg, form);
+            }
+          }
+        } else {
+          // Remove closed message if countdown is showing
+          let closedMsg = document.getElementById('registration-closed-message');
+          if (closedMsg) closedMsg.remove();
+        }
+      }
+    }
+    
+    // Load website settings into form
+    function loadWebsiteSettingsIntoForm() {
+      const settings = loadWebsiteSettings();
+      const dateInput = document.getElementById('website-open-date');
+      const timeInput = document.getElementById('website-open-time');
+      const durationInput = document.getElementById('website-duration');
+      
+      if (dateInput) dateInput.value = settings.openDate || '';
+      if (timeInput) timeInput.value = settings.openTime || '';
+      if (durationInput) durationInput.value = settings.duration || 60;
+      
+      updateWebsiteStatus();
+    }
+    
+    // Manual Company Management
+    let manualCompanies = [];
+    
+    // Load manual companies from localStorage
+    function loadManualCompanies() {
+      const saved = localStorage.getItem('manualCompanies');
+      if (saved) {
+        manualCompanies = JSON.parse(saved);
+      }
+      return manualCompanies;
+    }
+    
+    // Save manual companies to localStorage
+    function saveManualCompanies() {
+      localStorage.setItem('manualCompanies', JSON.stringify(manualCompanies));
+    }
+    
+    // Add a manual company (single)
+    function addManualCompany() {
+      const companyNameInput = document.getElementById('manual-company-name-single');
+      const companyName = companyNameInput ? companyNameInput.value.trim() : '';
+      
+      if (!companyName) {
+        alert('Please enter a company name.');
+        return;
+      }
+      
+      // Check if company already exists
+      if (manualCompanies.includes(companyName)) {
+        alert('This company name already exists in the list.');
+        return;
+      }
+      
+      // Add company
+      manualCompanies.push(companyName);
+      saveManualCompanies();
+      renderManualCompanies();
+      
+      // Clear input
+      if (companyNameInput) companyNameInput.value = '';
+      
+      alert(`Company "${companyName}" added successfully!`);
+      
+      // Update main page display
+      updateMainPageCompaniesList();
+    }
+    
+    // Add multiple companies from bulk paste
+    function addBulkCompanies() {
+      const bulkInput = document.getElementById('manual-company-names-bulk');
+      const bulkText = bulkInput ? bulkInput.value.trim() : '';
+      
+      if (!bulkText) {
+        alert('Please paste company names.');
+        return;
+      }
+      
+      // Parse company names - split by newlines or commas
+      let companyNames = bulkText.split(/\n|,/)
+        .map(name => name.trim())
+        .filter(name => name.length > 0);
+      
+      if (companyNames.length === 0) {
+        alert('No valid company names found. Please check your input.');
+        return;
+      }
+      
+      // Remove duplicates from the input
+      companyNames = [...new Set(companyNames)];
+      
+      // Filter out companies that already exist and add new ones in order
+      const existingCompanies = [];
+      const newCompanies = [];
+      
+      companyNames.forEach(company => {
+        if (manualCompanies.includes(company)) {
+          existingCompanies.push(company);
+        } else {
+          newCompanies.push(company);
+          // Add to end of array to maintain order
+          manualCompanies.push(company);
+        }
+      });
+      
+      // Save and update
+      saveManualCompanies();
+      renderManualCompanies();
+      
+      // Clear textarea
+      if (bulkInput) bulkInput.value = '';
+      
+      // Show results
+      let message = '';
+      if (newCompanies.length > 0) {
+        message = `${newCompanies.length} company/companies added successfully!\n\nAdded: ${newCompanies.join(', ')}`;
+      }
+      if (existingCompanies.length > 0) {
+        message += (message ? '\n\n' : '') + `${existingCompanies.length} company/companies already exist and were skipped:\n${existingCompanies.join(', ')}`;
+      }
+      
+      alert(message || 'No companies were added.');
+      
+      // Update main page display
+      updateMainPageCompaniesList();
+    }
+    
+    // Edit/Rename a manual company
+    let editingCompanyIndex = null;
+    
+    function editManualCompany(companyName, index) {
+      editingCompanyIndex = index;
+      renderManualCompanies();
+    }
+    
+    function saveEditedCompany(index) {
+      const editInput = document.getElementById(`edit-company-${index}`);
+      if (!editInput) return;
+      
+      const newName = editInput.value.trim();
+      
+      if (!newName) {
+        alert('Company name cannot be empty.');
+        return;
+      }
+      
+      // Check if the new name already exists (except for the current one)
+      if (manualCompanies.some((c, i) => c === newName && i !== index)) {
+        alert('This company name already exists.');
+        return;
+      }
+      
+      // Update the company name
+      manualCompanies[index] = newName;
+      saveManualCompanies();
+      editingCompanyIndex = null;
+      renderManualCompanies();
+      updateMainPageCompaniesList();
+      
+      alert(`Company renamed successfully!`);
+    }
+    
+    function cancelEditCompany() {
+      editingCompanyIndex = null;
+      renderManualCompanies();
+    }
+    
+    // Delete a manual company (by index to maintain order)
+    function deleteManualCompany(companyName, index) {
+      if (confirm(`Are you sure you want to delete "${companyName}"?`)) {
+        // Use index to delete to maintain order
+        if (index !== undefined && index >= 0 && index < manualCompanies.length) {
+          manualCompanies.splice(index, 1);
+        } else {
+          // Fallback: find by name and delete by index
+          const foundIndex = manualCompanies.findIndex(c => c === companyName);
+          if (foundIndex !== -1) {
+            manualCompanies.splice(foundIndex, 1);
+          }
+        }
+        saveManualCompanies();
+        renderManualCompanies();
+        updateMainPageCompaniesList();
+        alert(`Company "${companyName}" deleted successfully!`);
+      }
+    }
+    
+    // Store original companies list for filtering
+    let allManualCompanies = [];
+    
+    // Filter companies list based on search query
+    function filterCompaniesList(searchQuery) {
+      const listEl = document.getElementById('manual-companies-list');
+      if (!listEl) return;
+      
+      loadManualCompanies();
+      allManualCompanies = [...manualCompanies];
+      
+      if (!searchQuery || searchQuery.trim() === '') {
+        // Show all companies if search is empty
+        renderManualCompaniesList(manualCompanies);
+        return;
+      }
+      
+      // Filter companies based on search query (case-insensitive)
+      const query = searchQuery.trim().toLowerCase();
+      const filteredCompanies = manualCompanies.filter(company => 
+        company.toLowerCase().includes(query)
+      );
+      
+      renderManualCompaniesList(filteredCompanies, query);
+    }
+    
+    // Render manual companies list (with optional filter)
+    function renderManualCompaniesList(companiesToShow, searchQuery = '') {
+      const listEl = document.getElementById('manual-companies-list');
+      if (!listEl) return;
+      
+      if (companiesToShow.length === 0) {
+        if (searchQuery) {
+          listEl.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666; font-style: italic;">No companies found matching your search.</div>';
+        } else {
+          listEl.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666; font-style: italic;">No companies added yet.</div>';
+        }
+        return;
+      }
+      
+      // Get original indices for editing functionality
+      listEl.innerHTML = companiesToShow.map((company, displayIndex) => {
+        // Find the original index in the full manualCompanies array
+        const originalIndex = manualCompanies.findIndex(c => c === company);
+        
+        if (editingCompanyIndex === originalIndex) {
+          // Edit mode - use original index for numbering to maintain order
+          const itemNumber = originalIndex !== -1 ? originalIndex + 1 : displayIndex + 1;
+          return `
+            <div class="manual-company-item">
+              <span class="company-number">${itemNumber}.</span>
+              <input type="text" id="edit-company-${originalIndex}" value="${company.replace(/"/g, '&quot;')}" style="flex: 1; padding: 0.5rem; border: 1px solid #667eea; border-radius: 6px; font-size: 0.95rem;" />
+              <button type="button" class="btn-save-company" onclick="saveEditedCompany(${originalIndex})">Save</button>
+              <button type="button" class="btn-cancel-company" onclick="cancelEditCompany()">Cancel</button>
+            </div>
+          `;
+        } else {
+          // View mode - use original index for numbering to maintain order
+          const itemNumber = originalIndex !== -1 ? originalIndex + 1 : displayIndex + 1;
+          return `
+            <div class="manual-company-item">
+              <span class="company-number">${itemNumber}.</span>
+              <span class="company-name">${company}</span>
+              <button type="button" class="btn-edit-company" onclick="editManualCompany('${company.replace(/'/g, "\\'")}', ${originalIndex})">Edit</button>
+              <button type="button" class="btn-delete-company" onclick="deleteManualCompany('${company.replace(/'/g, "\\'")}', ${originalIndex})">Delete</button>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+    
+    // Render manual companies list (original function - now calls the new one)
+    function renderManualCompanies() {
+      loadManualCompanies();
+      allManualCompanies = [...manualCompanies];
+      
+      // Get current search query if any
+      const searchInput = document.getElementById('company-search-input');
+      const searchQuery = searchInput ? searchInput.value.trim() : '';
+      
+      if (!searchQuery || searchQuery === '') {
+        renderManualCompaniesList(manualCompanies);
+      } else {
+        filterCompaniesList(searchQuery);
+      }
+      
+      // Also update the main page display
+      updateMainPageCompaniesList();
+    }
+    
+    // Update companies list on main page
+    function updateMainPageCompaniesList() {
+      const displayEl = document.getElementById('manualCompaniesDisplay');
+      const listEl = document.getElementById('companiesDisplayList');
+      
+      if (!displayEl || !listEl) return;
+      
+      loadManualCompanies();
+      
+      if (manualCompanies.length === 0) {
+        displayEl.style.display = 'none';
+        return;
+      }
+      
+      // Keep the display hidden by default - user must click "Show Company Names" to see it
+      displayEl.style.display = 'none';
+      
+      // Show the button below phone if list is hidden
+      const showBtnBelowPhone = document.getElementById('showCompanyNamesBelowPhone');
+      if (showBtnBelowPhone) {
+        showBtnBelowPhone.style.display = 'block';
+      }
+      
+      // Render companies list with click handlers
+      renderMainPageCompaniesList(manualCompanies);
+    }
+    
+    // Filter companies on main page
+    function filterMainPageCompanies(searchQuery) {
+      loadManualCompanies();
+      
+      if (!searchQuery || searchQuery.trim() === '') {
+        // Show all companies if search is empty
+        renderMainPageCompaniesList(manualCompanies);
+        return;
+      }
+      
+      // Filter companies based on search query (case-insensitive)
+      const query = searchQuery.trim().toLowerCase();
+      const filteredCompanies = manualCompanies.filter(company => 
+        company.toLowerCase().includes(query)
+      );
+      
+      renderMainPageCompaniesList(filteredCompanies);
+    }
+    
+    // Track if company names are visible
+    let companyNamesVisible = false;
+    
+    // Show/hide company names list (toggle function)
+    function showCompanyNamesList() {
+      const companiesDisplay = document.getElementById('manualCompaniesDisplay');
+      const showBtnBelowPhone = document.getElementById('showCompanyNamesBelowPhone');
+      
+      if (!companiesDisplay) return;
+      
+      loadManualCompanies();
+      
+      if (manualCompanies.length === 0) {
+        alert('No companies have been added yet. Please add companies in the admin settings section.');
+        return;
+      }
+      
+      // Check if list is currently visible
+      const isVisible = companiesDisplay.style.display === 'block' || 
+                       (companiesDisplay.style.display === '' && companiesDisplay.offsetParent !== null);
+      
+      if (isVisible) {
+        // List is visible - hide it
+        companiesDisplay.style.display = 'none';
+        companyNamesVisible = false;
+        
+        // Update all company name elements to be hidden
+        const nameElements = document.querySelectorAll('.company-display-name');
+        nameElements.forEach(el => {
+          el.style.display = 'none';
+        });
+        
+        // Show the button
+        if (showBtnBelowPhone) {
+          showBtnBelowPhone.style.display = 'block';
+          showBtnBelowPhone.textContent = 'Show Company Names';
+        }
+      } else {
+        // List is hidden - show it
+        companyNamesVisible = true;
+        companiesDisplay.style.display = 'block';
+        
+        // Update all company name elements to be visible
+        const nameElements = document.querySelectorAll('.company-display-name');
+        nameElements.forEach(el => {
+          el.style.display = 'inline';
+        });
+        
+        // Update button text
+        if (showBtnBelowPhone) {
+          showBtnBelowPhone.textContent = 'Hide Company Names';
+        }
+        
+        // Scroll to the company list
+        companiesDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    
+    
+    // Render companies list on main page
+    function renderMainPageCompaniesList(companiesToShow) {
+      const listEl = document.getElementById('companiesDisplayList');
+      if (!listEl) return;
+      
+      if (companiesToShow.length === 0) {
+        listEl.innerHTML = '<div style="padding: 1rem; text-align: center; color: #666; font-style: italic;">No companies found matching your search.</div>';
+        return;
+      }
+      
+      // Render companies list with click handlers - maintain order, compact style
+      listEl.innerHTML = companiesToShow.map((company, displayIndex) => {
+        // Find the original index in the full manualCompanies array
+        const originalIndex = manualCompanies.findIndex(c => c === company);
+        const itemNumber = originalIndex !== -1 ? originalIndex + 1 : displayIndex + 1;
+        
+        return `
+          <div class="company-display-item-compact" onclick="selectCompanyFromList('${company.replace(/'/g, "\\'")}')" style="cursor: pointer;">
+            <span class="company-display-number">${itemNumber}.</span>
+            <span class="company-display-name" style="display: ${companyNamesVisible ? 'inline' : 'none'};">${company}</span>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // Toggle companies list visibility
+    function toggleCompaniesList() {
+      const companiesDisplay = document.getElementById('manualCompaniesDisplay');
+      const selectedDisplay = document.getElementById('selectedCompanyDisplay');
+      const toggleIcon = selectedDisplay ? selectedDisplay.querySelector('.toggle-icon') : null;
+      
+      if (!companiesDisplay || !selectedDisplay) return;
+      
+      if (companiesDisplay.style.display === 'none' || companiesDisplay.style.display === '') {
+        // Show the list
+        companiesDisplay.style.display = 'block';
+        if (toggleIcon) toggleIcon.textContent = '▲';
+      } else {
+        // Hide the list
+        companiesDisplay.style.display = 'none';
+        if (toggleIcon) toggleIcon.textContent = '▼';
+      }
+    }
+    
+    // Select company from the main page list and fill the form field
+    function selectCompanyFromList(companyName) {
+      const companyInput = document.getElementById('company');
+      const companiesDisplay = document.getElementById('manualCompaniesDisplay');
+      
+      if (companyInput) {
+        companyInput.value = companyName;
+      }
+      
+      // Show a beautiful visual indicator that company is selected
+      const selectedDisplay = document.getElementById('selectedCompanyDisplay');
+      const selectedCompanyText = document.getElementById('selectedCompanyText');
+      const toggleIcon = selectedDisplay ? selectedDisplay.querySelector('.toggle-icon') : null;
+      
+      if (selectedDisplay && selectedCompanyText) {
+        selectedCompanyText.innerHTML = `<strong style="color: #667eea;">${companyName}</strong>`;
+        selectedDisplay.style.display = 'block';
+        if (toggleIcon) toggleIcon.textContent = '▼';
+      }
+      
+      // Hide the company names list display and reset toggle state
+      if (companiesDisplay) {
+        companiesDisplay.style.display = 'none';
+      }
+      // Also close the dropdown if it's open
+      const dropdown = document.getElementById('company-dropdown');
+      if (dropdown) {
+        dropdown.style.display = 'none';
+      }
+    }
+    
+    // Company search and selection functionality for main form
+    function searchCompanies(query) {
+      const dropdown = document.getElementById('company-dropdown');
+      const companyInput = document.getElementById('company');
+      
+      if (!dropdown || !companyInput) return;
+      
+      loadManualCompanies();
+      
+      if (!query || query.trim() === '') {
+        // Show all companies if search is empty
+        showAllCompanies();
+        return;
+      }
+      
+      const searchQuery = query.trim().toLowerCase();
+      const filteredCompanies = manualCompanies.filter(company => 
+        company.toLowerCase().includes(searchQuery)
+      );
+      
+      if (filteredCompanies.length === 0) {
+        dropdown.innerHTML = '<div class="company-dropdown-item" style="padding: 0.75rem; color: #666; font-style: italic; text-align: center;">No companies found</div>';
+        dropdown.style.display = 'block';
+        return;
+      }
+      
+      // Display filtered companies
+      dropdown.innerHTML = filteredCompanies.map(company => `
+        <div class="company-dropdown-item" onclick="selectCompany('${company.replace(/'/g, "\\'")}')">
+          ${company}
+        </div>
+      `).join('');
+      
+      dropdown.style.display = 'block';
+    }
+    
+    function showCompanyDropdown() {
+      const dropdown = document.getElementById('company-dropdown');
+      const companyInput = document.getElementById('company');
+      
+      if (!dropdown || !companyInput) return;
+      
+      const currentValue = companyInput.value.trim();
+      
+      if (currentValue === '') {
+        showAllCompanies();
+      } else {
+        searchCompanies(currentValue);
+      }
+    }
+    
+    function showAllCompanies() {
+      const dropdown = document.getElementById('company-dropdown');
+      
+      if (!dropdown) return;
+      
+      loadManualCompanies();
+      
+      if (manualCompanies.length === 0) {
+        dropdown.innerHTML = '<div class="company-dropdown-item" style="padding: 0.75rem; color: #666; font-style: italic; text-align: center;">No companies available</div>';
+        dropdown.style.display = 'block';
+        return;
+      }
+      
+      // Show all companies (limit to 10 for better UX)
+      const companiesToShow = manualCompanies.slice(0, 10);
+      dropdown.innerHTML = companiesToShow.map(company => `
+        <div class="company-dropdown-item" onclick="selectCompany('${company.replace(/'/g, "\\'")}')">
+          ${company}
+        </div>
+      `).join('');
+      
+      if (manualCompanies.length > 10) {
+        dropdown.innerHTML += `<div class="company-dropdown-item" style="padding: 0.5rem; color: #666; font-size: 0.85rem; text-align: center; font-style: italic;">... and ${manualCompanies.length - 10} more. Type to search.</div>`;
+      }
+      
+      dropdown.style.display = 'block';
+    }
+    
+    function selectCompany(companyName) {
+      const companyInput = document.getElementById('company');
+      const dropdown = document.getElementById('company-dropdown');
+      
+      if (companyInput) {
+        companyInput.value = companyName;
+      }
+      
+      if (dropdown) {
+        dropdown.style.display = 'none';
+      }
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const companyInput = document.getElementById('company');
+      const dropdown = document.getElementById('company-dropdown');
+      
+      // Only close dropdown if it's actually visible and click is outside
+      if (dropdown && dropdown.style.display === 'block' &&
+          companyInput && 
+          !companyInput.contains(event.target) && 
+          !dropdown.contains(event.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+
+    // Group Information Management
+    // Default group configuration
+    const defaultGroupConfig = {
+      A: { range: [1, 10], capacity: 10, time: '8:00 to 9:00', date: '', day: '', visible: true },
+      B: { range: [11, 20], capacity: 10, time: '8:00 to 9:00', date: '', day: '', visible: true },
+      C: { range: [21, 30], capacity: 10, time: '8:00 to 9:00', date: '', day: '', visible: true },
+      D: { range: [31, 40], capacity: 10, time: '8:00 to 9:00', date: '', day: '', visible: true }
+    };
+    
+    // Load group settings from localStorage or use defaults
+    function loadGroupSettings() {
+      const saved = localStorage.getItem('groupSettings');
+      if (saved) {
+        const savedSettings = JSON.parse(saved);
+        // Merge with defaults, ensuring visible property is preserved
+        const merged = { ...defaultGroupConfig };
+        ['A', 'B', 'C', 'D'].forEach(group => {
+          if (savedSettings[group]) {
+            merged[group] = { ...defaultGroupConfig[group], ...savedSettings[group] };
+            // Ensure visible property defaults to true if not set
+            if (merged[group].visible === undefined) {
+              merged[group].visible = true;
+            }
+          }
+        });
+        return merged;
+      }
+      return defaultGroupConfig;
+    }
+    
+    // Save group settings to localStorage
+    function saveGroupSettingsToStorage(settings) {
+      localStorage.setItem('groupSettings', JSON.stringify(settings));
+    }
+    
+    // Get current group configuration (merged with saved settings)
+    let groupConfig = loadGroupSettings();
+    
+    // Get day name from date string
+    function getDayNameFromDate(dateString) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[date.getDay()];
+    }
+    
+    // Auto-set day when date is selected
+    function setupDateChangeListeners() {
+      ['A', 'B', 'C', 'D'].forEach(group => {
+        const dateInput = document.getElementById(`group${group}-date`);
+        const dayInput = document.getElementById(`group${group}-day`);
+        
+        if (dateInput && dayInput) {
+          dateInput.addEventListener('change', function() {
+            const selectedDate = this.value;
+            if (selectedDate) {
+              const dayName = getDayNameFromDate(selectedDate);
+              dayInput.value = dayName;
+            }
+          });
+        }
+      });
+    }
+    
+    // Load settings into admin form fields
+    function loadSettingsIntoForm() {
+      ['A', 'B', 'C', 'D'].forEach(group => {
+        const config = groupConfig[group];
+        const timeInput = document.getElementById(`group${group}-time`);
+        const dateInput = document.getElementById(`group${group}-date`);
+        const dayInput = document.getElementById(`group${group}-day`);
+        const capacityInput = document.getElementById(`group${group}-capacity`);
+        const visibleInput = document.getElementById(`group${group}-visible`);
+        
+        if (timeInput) timeInput.value = config.time || '';
+        if (dateInput) dateInput.value = config.date || '';
+        if (dayInput) {
+          // If date exists but day doesn't, auto-set day from date
+          if (config.date && !config.day) {
+            dayInput.value = getDayNameFromDate(config.date);
+          } else {
+            dayInput.value = config.day || '';
+          }
+        }
+        if (capacityInput) capacityInput.value = config.capacity || '';
+        if (visibleInput !== null) visibleInput.checked = config.visible !== false; // Default to true if not set
+      });
+      
+      // Setup date change listeners after loading
+      setupDateChangeListeners();
+    }
+    
+    // Save settings for a specific group
+    function saveGroupSettings(group) {
+      const timeInput = document.getElementById(`group${group}-time`);
+      const dateInput = document.getElementById(`group${group}-date`);
+      const dayInput = document.getElementById(`group${group}-day`);
+      const capacityInput = document.getElementById(`group${group}-capacity`);
+      const visibleInput = document.getElementById(`group${group}-visible`);
+      
+      const time = timeInput ? timeInput.value.trim() : '';
+      const date = dateInput ? dateInput.value : '';
+      const day = dayInput ? dayInput.value : '';
+      const capacity = capacityInput && capacityInput.value ? parseInt(capacityInput.value) : null;
+      const visible = visibleInput ? visibleInput.checked : true;
+      
+      // Update groupConfig (only if values are provided)
+      if (time) groupConfig[group].time = time;
+      if (date) {
+        groupConfig[group].date = date;
+        // Auto-set day if not already set
+        if (!day && date) {
+          const dayName = getDayNameFromDate(date);
+          groupConfig[group].day = dayName;
+          if (dayInput) dayInput.value = dayName;
+        }
+      }
+      if (day) groupConfig[group].day = day;
+      groupConfig[group].visible = visible;
+      if (capacity && capacity > 0) {
+        groupConfig[group].capacity = capacity;
+      }
+      
+      // Save to localStorage
+      saveGroupSettingsToStorage(groupConfig);
+      
+      // Reload groupConfig to ensure consistency
+      groupConfig = loadGroupSettings();
+      
+      // Update group info display immediately - this updates the main page group cards
+      updateGroupInfo();
+      
+      // Force a small delay to ensure DOM is updated, then refresh if main content is visible
+      setTimeout(() => {
+        updateGroupInfo();
+      }, 100);
+      
+      alert(`Group ${group} settings saved successfully! The changes are now visible on the main page.`);
+    }
+    
+    let selectedGroup = null;
+    
+    function selectGroup(group) {
+      selectedGroup = group;
+      const groupInput = document.getElementById('group');
+      const selectedDisplay = document.getElementById('selectedGroupDisplay');
+      
+      // Update hidden input
+      groupInput.value = group;
+      
+      // Update display
+      selectedDisplay.innerHTML = `<strong>Group ${group}</strong>`;
+      
+      // Update visual selection
+      document.querySelectorAll('.group-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      document.querySelector(`.group-card[data-group="${group}"]`).classList.add('selected');
+      
+      // Check if group is full
+      const count = getGroupCount(group);
+      const capacity = groupConfig[group].capacity;
+      if (count >= capacity) {
+        selectedDisplay.innerHTML += ` <span style="color: var(--danger-color);">(${texts.groupFull})</span>`;
+      }
+    }
+
+    function getRegistrations() {
+      const stored = localStorage.getItem('registrations');
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveRegistration(formData) {
+      const registrations = getRegistrations();
+      const registration = {
+        id: Date.now(),
+        name: formData.name,
+        phone: formData.phone,
+        company: formData.company,
+        group: formData.group,
+        date: new Date().toISOString(),
+        reviewed: false,
+        paid: false
+      };
+      registrations.push(registration);
+      localStorage.setItem('registrations', JSON.stringify(registrations));
+      updateGroupInfo();
+      
+      // Update registrations list if Registration section is currently visible
+      const registrationSection = document.getElementById('section-registration');
+      if (registrationSection && registrationSection.style.display !== 'none') {
+        renderRegistrationsList();
+      }
+    }
+
+    function getGroupCount(group) {
+      const registrations = getRegistrations();
+      return registrations.filter(r => r.group === group).length;
+    }
+
+    function formatDate(date) {
+      const d = new Date(date);
+      // Format as DD/MM/YYYY (day/month/year - month in the middle)
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function updateGroupInfo() {
+      const today = new Date();
+      
+      ['A', 'B', 'C', 'D'].forEach(group => {
+        const config = groupConfig[group];
+        
+        // Check if group should be visible on main page
+        const groupCard = document.querySelector(`.group-card[data-group="${group}"]`);
+        if (groupCard) {
+          if (config.visible === false) {
+            groupCard.style.display = 'none';
+            return; // Skip updating this group if it's hidden
+          } else {
+            groupCard.style.display = 'block';
+          }
+        }
+        
+        const count = getGroupCount(group);
+        const remaining = Math.max(0, config.capacity - count);
+        
+        // Update places left (remaining) - show "Closed" if 0
+        const remainingEl = document.getElementById(`group${group}-remaining`);
+        if (remainingEl) {
+          if (remaining === 0) {
+            remainingEl.textContent = 'Closed';
+            // Change background color when closed
+            if (groupCard) {
+              groupCard.classList.add('closed');
+            }
+          } else {
+            remainingEl.textContent = remaining;
+            // Remove closed class if not closed
+            if (groupCard) {
+              groupCard.classList.remove('closed');
+            }
+          }
+        }
+        
+        // Update time - find element in group card (not admin form)
+        const timeEl = document.querySelector(`.group-card[data-group="${group}"] .group-time .group-value`);
+        if (timeEl) {
+          if (config.time) {
+            timeEl.textContent = config.time;
+          } else {
+            timeEl.textContent = '8:00 to 9:00'; // Default
+          }
+        }
+        
+        // Update day - find element in group card (not admin form)
+        const dayEl = document.querySelector(`.group-card[data-group="${group}"] .group-day .group-value`);
+        if (dayEl) {
+          if (config.day) {
+            dayEl.textContent = config.day;
+          } else {
+            dayEl.textContent = ''; // Empty if not set
+          }
+        }
+        
+        // Update date - use saved date if available, otherwise use today
+        const dateEl = document.querySelector(`.group-card[data-group="${group}"] .group-date .group-value`);
+        if (dateEl) {
+          if (config.date) {
+            // Format the date from settings (YYYY-MM-DD format from date input)
+            const dateObj = new Date(config.date + 'T00:00:00');
+            dateEl.textContent = formatDate(dateObj);
+          } else {
+            dateEl.textContent = formatDate(today);
+          }
+        }
+        
+        // Update group number label
+        const groupNumberEl = document.querySelector(`.group-card[data-group="${group}"] .group-number`);
+        if (groupNumberEl) {
+          groupNumberEl.textContent = `Group ${group}`;
+        }
+      });
+      
+      // Update group info labels
+      document.querySelectorAll('.groups-info-title').forEach(el => {
+        el.textContent = 'Group Information';
+      });
+    }
+
+    // Validate Iraqi mobile number
+    function validateIraqiMobile(phone) {
+      // Remove any spaces or dashes
+      const cleaned = phone.replace(/[\s-]/g, '');
+      // Check if it's 11 digits and starts with 07
+      return /^07[0-9]{9}$/.test(cleaned);
+    }
+
+    // Handle form submission
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Check if registration is open
+      if (!isRegistrationOpen()) {
+        alert('Registration is currently closed. Please wait for the admin to activate it.');
+        return;
+      }
+      
+      const formData = {
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim().replace(/[\s-]/g, ''),
+        company: document.getElementById('company').value.trim(),
+        group: document.getElementById('group').value || selectedGroup
+      };
+      
+      if (!formData.name || !formData.phone || !formData.company || !formData.group) {
+        alert(texts.adminLoginError || 'Please fill all fields and select a group');
+        return;
+      }
+      
+      // Validate Iraqi mobile number format
+      if (!validateIraqiMobile(formData.phone)) {
+        alert('Please enter a valid Iraqi mobile number (11 digits starting with 07, e.g., 07501234567)');
+        document.getElementById('phone').focus();
+        return;
+      }
+      
+      const groupCount = getGroupCount(formData.group);
+      const groupCapacity = groupConfig[formData.group].capacity;
+      
+      if (groupCount >= groupCapacity) {
+        alert(texts.groupFull || 'This group is full');
+        return;
+      }
+      
+      // Check for duplicate registration (by phone number)
+      const existingRegistrations = getRegistrations();
+      const isDuplicate = existingRegistrations.some(reg => 
+        reg.phone === formData.phone
+      );
+      
+      if (isDuplicate) {
+        alert('This phone number has already been registered. Each company can only register once.');
+        document.getElementById('phone').focus();
+        return;
+      }
+      
+      saveRegistration(formData);
+      
+      // Reset form
+      this.reset();
+      
+      // Clear selected group
+      selectedGroup = null;
+      document.getElementById('group').value = '';
+      document.querySelectorAll('.group-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      const selectedGroupDisplay = document.getElementById('selectedGroupDisplay');
+      selectedGroupDisplay.innerHTML = `<span>${texts.pleaseSelectGroup}</span>`;
+      
+      // Build detailed success message
+      const group = formData.group;
+      const config = groupConfig[group];
+      let successMessage = `Successfully completed in Group ${group}`;
+      
+      // Add time if available
+      if (config && config.time) {
+        // Check if time already has "from" prefix, if not add it
+        let timeText = config.time;
+        if (!timeText.toLowerCase().includes('from')) {
+          timeText = `from ${timeText}`;
+        }
+        successMessage += `, ${timeText}`;
+      }
+      
+      // Add date if available
+      if (config && config.date) {
+        const dateObj = new Date(config.date + 'T00:00:00');
+        const formattedDate = formatDate(dateObj);
+        successMessage += ` on ${formattedDate}`;
+      }
+      
+      // Add day if available
+      if (config && config.day) {
+        successMessage += ` on ${config.day}`;
+      }
+      
+      // Show success message
+      alert(successMessage);
+      
+      // Update group info
+      updateGroupInfo();
+    });
+
+    // Initialize - ensure DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initUsers();
+        updateGroupInfo();
+        loadWebsiteSettings();
+        checkRegistrationAvailability();
+        updateMainPageCompaniesList();
+        // Update countdown every second
+        setInterval(function() {
+          updateCountdownDisplay();
+          checkRegistrationAvailability();
+          updateWebsiteStatus();
+        }, 1000); // Update every second for countdown
+      });
+    } else {
+      // DOM is already ready
+      initUsers();
+      updateGroupInfo();
+      loadWebsiteSettings();
+      checkRegistrationAvailability();
+      updateMainPageCompaniesList();
+      // Update countdown every second
+      setInterval(function() {
+        updateCountdownDisplay();
+        checkRegistrationAvailability();
+        updateWebsiteStatus();
+      }, 1000); // Update every second for countdown
+    }
+  </script>
+</body>
+</html>

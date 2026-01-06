@@ -1,0 +1,286 @@
+/* Professional CSS for modern, clean, accessible website design */
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(120deg, #F8FAFC 0%, #e0e7ff 100%);
+  color: var(--text-primary, #262626);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.01em;
+}
+
+.container {
+  max-width: 430px;
+  margin: 2.5rem auto;
+  background: #fff;
+  box-shadow: 0 4px 24px 0 rgba(44, 59, 117, 0.13);
+  border-radius: 18px;
+  padding: 2rem 2.25rem;
+  transition: box-shadow 0.25s;
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 99vw;
+    padding: 1.1rem 0.5rem;
+    box-shadow: none;
+    border-radius: 12px;
+  }
+}
+
+h3, h4, h5 {
+  margin-top: 0.5rem;
+  margin-bottom: 1.1rem;
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--text-primary, #1a1e29);
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.44rem;
+  color: #3f486b;
+  transition: color 0.2s;
+}
+
+input, select {
+  width: 100%;
+  padding: 1rem 1.1rem;
+  border: 1.7px solid #e5e7eb;
+  border-radius: 11px;
+  background: #fafbfc;
+  font-size: 1rem;
+  transition: border-color 0.23s, box-shadow 0.23s;
+  color: #20263c;
+  margin-bottom: 0.8rem;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #6465e0;
+  box-shadow: 0 0 0 2.5px rgba(101, 115, 255, 0.13);
+}
+
+input::placeholder, select::placeholder {
+  color: #aab0c6;
+  opacity: 0.8;
+}
+
+button, .btn-add-user, .admin-login-btn, .admin-logout-btn {
+  width: 100%;
+  display: inline-block;
+  padding: 1rem 1.1rem;
+  font-size: 1.07rem;
+  font-weight: 600;
+  background: linear-gradient(92deg, #6465e0 40%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  margin-top: 1.1rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.22s, box-shadow 0.22s, transform 0.15s;
+  box-shadow: 0 2px 6px 0 rgba(36, 54, 111, 0.12);
+}
+
+button:hover, .btn-add-user:hover, .admin-login-btn:hover, .admin-logout-btn:hover {
+  background: linear-gradient(92deg, #764ba2 0%, #6465e0 92%);
+  box-shadow: 0 5px 14px 0 rgba(100, 101, 224, 0.18);
+  transform: translateY(-1.5px) scale(1.03);
+}
+
+button:active, .btn-add-user:active, .admin-login-btn:active, .admin-logout-btn:active {
+  transform: translateY(0);
+}
+
+.form-group, .admin-form-group {
+  margin-bottom: 1.4rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.form-row > .admin-form-group {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+.language-selector {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  background: #f1f3fa;
+  border-radius: 18px;
+  padding: 0.40rem 1rem 0.40rem 0.66rem;
+  cursor: pointer;
+  transition: background 0.17s;
+  font-size: 1.01rem;
+  font-weight: 500;
+  color: #4339b5;
+  border: 1px solid #e0e7ff;
+}
+
+.lang-toggle:hover {
+  background: #e0e7ff;
+}
+
+.lang-dropdown {
+  position: absolute;
+  z-index: 100;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(44, 59, 117, 0.12);
+  margin-top: 0.2rem;
+  right: 0;
+  width: 160px;
+  display: none;
+}
+
+.lang-dropdown .lang-option {
+  padding: 0.67rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  font-size: 0.98rem;
+  color: #323565;
+  background: none;
+  transition: background 0.14s, color 0.14s;
+}
+
+.lang-dropdown .lang-option.active,
+.lang-dropdown .lang-option:hover {
+  background: #6465e01b;
+  color: #764ba2;
+}
+
+.lang-flag {
+  font-size: 1.13rem;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .container {
+    padding: 1rem 0.2rem;
+    max-width: 100vw;
+  }
+}
+
+/* Admin Panel Styles */
+.admin-section {
+  margin-bottom: 2rem;
+}
+
+.admin-panel {
+  margin: 0 auto;
+  background: #f6f8ff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px 0 rgba(64, 104, 156, 0.06);
+  padding: 1.3rem 1.1rem;
+}
+
+.admin-toggle {
+  background: none;
+  border: none;
+  color: #764ba2;
+  font-size: 1.17rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.admin-panel h3,
+.admin-panel h4 {
+  color: #4d468c;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 1.7px solid #e4e4f7;
+  margin-bottom: 1rem;
+  padding-bottom: 0.3rem;
+}
+
+.admin-tab {
+  background: none;
+  border: none;
+  color: #5d55b6;
+  font-weight: 500;
+  font-size: 1.01rem;
+  padding: 0.56rem 1.22rem;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s;
+}
+
+.admin-tab.active,
+.admin-tab:hover {
+  background: #ececff;
+  color: #4d468c;
+  font-weight: 600;
+}
+
+.admin-content-section {
+  display: none;
+}
+
+.admin-content-section.active {
+  display: block;
+  padding-top: 0.5rem;
+}
+
+.add-user-form {
+  background: #f2f3ff;
+  padding: 1rem 0.8rem;
+  border-radius: 11px;
+  box-shadow: 0 1px 4px 0 rgba(120, 120, 160, 0.05);
+  margin-bottom: 2rem;
+}
+
+.user-list {
+  margin-top: 1rem;
+}
+
+.admin-logout {
+  margin-top: 1.7rem;
+}
+
+#admin-note {
+  margin-top: 1.6rem;
+  color: #8b8fa9;
+  text-align: center;
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+::-webkit-scrollbar {
+  width: 0.47em;
+  background: #f6f6f6;
+}
+::-webkit-scrollbar-thumb {
+  background: #e3e5ef;
+  border-radius: 0.6em;
+}
